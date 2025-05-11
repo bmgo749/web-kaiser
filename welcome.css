@@ -1,0 +1,60 @@
+@font-face {
+    font-family: 'Dongle Light';
+    src: url('Dongle-Light.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Donpoligraf';
+    src: url('Donpoligrafbum-Bold.otf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Neometra';
+    src: url('Neometra-Caps-FFP.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: "VT323";
+    src: url('VT323-Regular.ttf') format('truetype');
+}
+
+.welcome-text {
+    position: absolute;
+    top: 28%;
+    left: 100px;
+    transform: translateY(-50%);
+    font-size: 84px;
+    font-weight: 900px;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 16px;
+    white-space: nowrap;
+}
+
+.additional-text {
+    position: absolute;
+    top: 35%;
+    left: 117px;
+    transform: translateY(-50%);
+    font-size: 48px;
+    font-weight: 750px;
+    color: white;
+    font-family: 'Dongle Light', sans-serif;
+    letter-spacing: 14px;
+    white-space: nowrap;
+}
+
+#randomText {
+    position: absolute;
+    top: 44%;
+    left: 117px;
+    transform: translateY(-50%);
+    font-size: 52px;
+    font-weight: 750px;
+    color: white;
+    font-family: 'VT323', sans-serif;
+    letter-spacing: 8px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+}

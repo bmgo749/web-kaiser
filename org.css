@@ -1,0 +1,172 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  scroll-behavior: smooth;
+  font-family: 'Dongle', sans-serif;
+  background-image: url('Tak_berjudul196_20250510191632.png');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.carousel-container {
+  display: flex;
+  gap: 20px;
+  padding: 100px;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Kartu umum */
+.card {
+  flex: 0 0 auto;
+  width: 260px;
+  height: 450px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  text-align: center;
+  padding: 30px;
+  backdrop-filter: blur(10px);
+  transition: all 0.4s ease;
+  cursor: pointer;
+  transform: scale(0.8);
+  opacity: 0.6;
+  filter: blur(1.5px);
+  z-index: 1;
+  box-sizing: border-box;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s ease, opacity 0.6s ease;
+}
+
+.center-card {
+  transform: scale(1.3);
+  opacity: 1;
+  filter: none;
+  z-index: 3;
+  border: 2px solid transparent;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  transition: transform 0.6s ease, opacity 0.6s ease;
+}
+
+.center-card:hover {
+  transform: scale(1.4);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 1);
+}
+
+.side-card:hover {
+  transform: scale(1.1);
+}
+
+/* Logo */
+.org-logo {
+  width: 100px;
+  height: auto;
+  opacity: 0.7;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+/* Teks */
+.card h2 {
+  color: white;
+  font-size: 28px;
+  font-weight: 400;
+  margin: 10px 0;
+}
+
+.description {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 18px;
+}
+
+/* Animasi swipe */
+.swipe-left {
+  animation: swipeLeft 0.6s ease-in-out forwards;
+}
+
+.swipe-right {
+  animation: swipeRight 0.6s ease-in-out forwards;
+}
+
+/* Keyframes untuk swipe-left */
+@keyframes swipeLeft {
+  0% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateX(0) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+/* Keyframes untuk swipe-right */
+@keyframes swipeRight {
+  0% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateX(0) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.org-text {
+    position: absolute;
+    top: 10%;
+    left: 29.1%;
+    transform: translateY(-50%);
+    font-size: 48px;
+    font-weight: 750px;
+    color: white;
+    font-family: 'Dongle Light', sans-serif;
+    letter-spacing: 14px;
+    white-space: nowrap;
+}
+
+/* Gaya dasar untuk box */
+.box {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 24px;
+  font-weight: 600;
+  color: white;
+  background-color: transparent;
+  border-radius: 8px; /* Rounded corners */
+  cursor: pointer;
+  transition: all 0.3s ease; /* Efek transisi halus */
+  position: absolute;
+  top: 85%;
+  left: 47.5%;
+}
+
+/* Efek hover - menambahkan border cahaya */
+.box:hover {
+  border: 2px solid white; /* Cahaya border */
+  box-shadow: 0 0 15px white; /* Efek cahaya */
+}
+
+/* Menambahkan gaya untuk border lebih halus saat hover */
+.box:active {
+  background-color: #444; /* Ganti warna saat di-click */
+}

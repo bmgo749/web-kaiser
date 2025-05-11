@@ -1,0 +1,54 @@
+.about-text a1{
+    position: absolute;
+    top: 115%;
+    left: 100px;
+    transform: translateY(-50%);
+    font-size: 56px;
+    font-weight: 900px;
+    color: white;
+    font-family: 'Dongle Light', sans-serif;
+    letter-spacing: 12px;
+    white-space: nowrap;
+}
+
+.description-box {
+    position: absolute;
+    margin-top: 290px;
+    margin-left: 99px;
+    padding: 20px;
+    border: 6px solid black; /* tebal */
+    color: white;
+    font-family: 'Dongle Light', sans-serif;
+    font-size: 41px;
+    width: 90%;
+    max-width: 800px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.description-box:hover {
+    background-color: transparent;
+}
+
+#descriptionBox {
+    transition: box-shadow 0.3s ease;
+}
+
+#descriptionBox:hover {
+    box-shadow: 0 0 30px 10px white; /* cahaya saat hover */
+}
+
+.highlight-link {
+    text-decoration: none;
+    color: white;
+    font-size: 41px; /* konsisten dengan teks lain */
+    transition: all 0.3s ease;
+    font-family: 'Dongle Light', sans-serif;
+}
+
+.highlight-link:hover {
+    text-decoration: underline;
+    font-size: 44px; /* membesar saat hover */
+    font-weight: 700px;
+    cursor: pointer; /* ubah mouse menjadi pointer */
+}

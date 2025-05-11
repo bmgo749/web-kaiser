@@ -1,0 +1,128 @@
+/*MAIN SECTION*/
+@font-face {
+    font-family: 'Donpoligraf';
+    src: url('Donpoligrafbum-Bold.otf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Dongle Light';
+    src: url('Dongle-Light.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Neometra';
+    src: url('Neometra-Caps-FFP.ttf') format('truetype');
+}
+
+body {
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%),url('Desain\ tanpa\ judul.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.about-text {
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%), url('Tak_berjudul196_20250509205959.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+    height: 97%;
+    margin-top: 770px;
+}
+
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    scroll-behavior: smooth;
+}
+
+/*NAVBAR SECTION*/
+
+.navbar {
+    position: absolute;
+    top: 63px;
+    right: 60px;
+    z-index: 2;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 80px;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar ul li a {
+    position: relative;
+    text-decoration: none;
+    color: white;
+    font-family: 'Donpoligraf', sans-serif;
+    font-size: 20px;
+    overflow: hidden;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.navbar ul li a:hover {
+    transform: scale(1.15);
+}
+
+.navbar ul li a:hover::after {
+    width: 100%;
+}
+
+/*LOGO SECTION*/
+
+.logo-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 3;
+    width: 300px;
+    height: 100px;
+    overflow: visible;
+}
+
+.logo-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.logo-img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 80px;
+    height: auto;
+    transform-origin: center;
+    transition: transform 1.2s ease-in-out;
+}
+
+.logo-label {
+    position: absolute;
+    top: 22px;
+    left: 0;
+    font-family: 'Neometra', sans-serif;
+    font-size: 28px;
+    color: white;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    pointer-events: none;
+}
+
+/* Saat hover: logo pindah ke kanan + label muncul */
+.logo-container:hover .logo-img {
+    transform: translateX(210px) rotate(360deg);
+    /* HAPUS: opacity: 0; agar logo tidak hilang */
+}
+
+.logo-container:hover .logo-label {
+    opacity: 1;
+    transform: translateX(0px);
+}

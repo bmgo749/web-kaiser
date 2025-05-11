@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        @font-face {
+            font-family: 'Donpoligraf';
+            src: url('Donpoligrafbum-Bold.otf') format('truetype');
+        }
+
+        @font-face {
+            font-family: 'Dongle Light';
+            src: url('Dongle-Light.ttf') format('truetype');
+        }
+
+        @font-face {
+            font-family: 'Neometra';
+            src: url('Neometra-Caps-FFP.ttf') format('truetype');
+        }
+
+        .box {
+            text-align: center;
+            top: 57%;
+            right: 27%;
+            position: relative;
+        }
+
+        .box button {
+            color: rgb(255, 255, 255);
+            border: 12px solid rgb(17, 18, 18);
+            border-radius: 35px;
+            padding: 55px 80px;
+            font-weight: 600px;
+            font-family: 'Donpoligraf', sans-serif;
+            font-size: 30px;
+            background: transparent;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.3s ease-in-out, color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+        }
+
+        .box button:hover {
+            background: transparent;
+            color: white;
+            box-shadow: 0 0 30px rgb(103, 103, 103);
+        }
+
+        /* Diamond Shape Stars */
+        .stars {
+            position: absolute;
+            width: 16px;
+            height: 18px;
+            background-color: white;
+            transform: rotate(45deg);
+            box-shadow: 0 0 10px white;
+            opacity: 1;
+            transition: transform 0.5s ease-out, opacity 0.5s ease-in-out;
+        }
+
+        .stars.large {
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaiserliche</title>
+    <link rel="stylesheet" href="kaiserliche.css" />
+    <link rel="stylesheet" href="welcome.css" />
+    <link rel="stylesheet" href="page2.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="box">
+        <button id="glowButton">Our Wiki</button>
+    </div>
+
+    <section id="aboutUs" class="about-text">
+        <a1 id="Moon"></a1>
+        <div id="descriptionBox" class="description-box">
+            Kaiserliche Orders adalah organisasi yang didirikan oleh 5 founder yang dikenal sebagai "Kru Lima" pada tanggal 1 Mei,<br> 
+            dan diluncurkan ke publik pada tanggal 20 Mei. Organisasi ini memiliki beberapa <a href="organization.html" class="highlight-link">sub-organisasi</a> yang beroperasi dalam<br>
+            bidang yang berbeda-beda.
+        </div>
+    </section>
+
+    <div class="black-cover"></div>
+
+    <script>
+
+        const button = document.getElementById("glowButton");
+        let stars = [];
+        button.addEventListener("click", () => {
+        window.location.href = "https://tampvan.miraheze.org/wiki/Kaiserliche_Order"; // Ganti dengan URL tujuan
+        });
+
+        button.addEventListener("mouseover", () => {
+            removeStars();
+            for (let i = 0; i < 5; i++) { 
+                let star = document.createElement("div");
+                star.classList.add("stars");
+                if (Math.random() > 0.5) star.classList.add("large");
+                document.body.appendChild(star);
+
+                let buttonRect = button.getBoundingClientRect();
+                let startX = Math.random() * buttonRect.width + buttonRect.left;
+                let startY = Math.random() * buttonRect.height + buttonRect.top;
+                
+                star.style.left = `${startX}px`;
+                star.style.top = `${startY}px`;
+
+                setTimeout(() => {
+                    let angle = Math.random() * 2 * Math.PI;
+                    let distance = Math.random() * 50 + 20;
+                    let moveX = Math.cos(angle) * distance;
+                    let moveY = Math.sin(angle) * distance;
+                    star.style.transform = `rotate(45deg) translate(${moveX}px, ${moveY}px)`;
+                    star.style.opacity = "1";
+                }, 50);
+                
+                stars.push(star);
+            }
+        });
+
+        button.addEventListener("mouseleave", () => {
+            removeStars();
+        });
+
+        function removeStars() {
+            stars.forEach(star => {
+                star.style.opacity = "0";
+                setTimeout(() => star.remove(), 500);
+            });
+            stars = []; 
+        }
+    </script>
+
+    <div id="logoo" class="logo-container">
+        <div class="logo-wrapper">
+            <img src="Tak_berjudul184_20250507221919.png" alt="Logo" class="logo-img">
+            <div class="logo-label">KAISERLICHE</div>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <ul>
+            <li><a href="#logoo">Home</a></li>
+            <li><a href="#">Constitution</a></li>
+            <li><a href="#aboutUs">About Us</a></li>
+        </ul>
+    </nav>
+
+    <div class="welcome-text">
+        W E L C O M E
+    </div>
+
+    <div class="additional-text">
+        Kaiserliche Order
+    </div>
+
+    <div id="randomText"></div>
+    <script src="script.js"></script>
+
+</body>
+</html>
