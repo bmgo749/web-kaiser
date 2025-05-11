@@ -8,6 +8,43 @@
     src: url('Neometra-Caps-FFP.ttf') format('truetype');
 }
 
+/* Add the following CSS for the credit section */
+.credit-section {
+  background-color: black;
+  color: white;
+  text-align: center;
+  padding: 15px 0;
+  position: relative;
+  margin-top: 0px;
+  bottom: 0;
+  width: 100%;
+  font-family: 'Dongle', sans-serif;
+}
+
+.credit-text p {
+  font-size: 14px;
+  margin: 0;
+  letter-spacing: 2px;
+  opacity: 0.9;
+}
+
+.email-text {
+  font-size: 14px;
+  margin-top: 10px;
+  font-style: italic;
+  opacity: 0.9;
+}
+
+.email-text a {
+  color: goldenrod;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.email-text a:hover {
+  text-decoration: underline;
+}
+
 .medal-section {
   margin: 0;
   font-family: 'Dongle Light', sans-serif;
