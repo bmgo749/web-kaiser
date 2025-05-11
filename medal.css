@@ -1,0 +1,73 @@
+@font-face {
+    font-family: 'Dongle Light';
+    src: url('Dongle-Light.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Neometra';
+    src: url('Neometra-Caps-FFP.ttf') format('truetype');
+}
+
+.medal-section {
+  margin: 0;
+  font-family: 'Dongle Light', sans-serif;
+  background: url('Tak_berjudul196_20250510191632.png') no-repeat center top fixed;
+  background-size: cover;
+  margin-top: -20px;
+  color: white;
+}
+
+.medal-section {
+  padding: 50px;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.medal-title {
+  font-family: 'Dongle Light', sans-serif;
+  font-weight: 300;
+  font-size: 48px;
+  text-align: center;
+  margin-bottom: 40px;
+  letter-spacing: 4px;
+  color: #ffffff;
+}
+
+.medal-list {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  align-items: center;
+}
+
+.medal-card {
+  font-family: 'Dongle Light', sans-serif;
+  font-weight: 300;
+  font-size: 28px;
+  line-height: 1.4;
+  background-color: rgba(200, 200, 200, 0.1);
+  padding: 20px 30px;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 12px;
+  transition: 0.4s ease;
+  border: 1px solid transparent;
+}
+
+.medal-card h2 {
+  margin-top: 0;
+  font-size: 36px;
+  font-weight: 500;
+  color: gold;
+}
+
+.medal-card ul {
+  padding-left: 20px;
+  margin: 10px 0 0 0;
+}
+
+.medal-card:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid #ffffff70;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}

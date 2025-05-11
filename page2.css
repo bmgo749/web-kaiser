@@ -16,7 +16,7 @@
     margin-top: 290px;
     margin-left: 99px;
     padding: 20px;
-    border: 6px solid black; /* tebal */
+    border: transparent; /* tebal */
     color: white;
     font-family: 'Dongle Light', sans-serif;
     font-size: 41px;
