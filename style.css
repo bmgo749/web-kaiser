@@ -1,0 +1,22 @@
+#mobile-message {
+  display: none;
+  background: white;
+  color: black;
+  font-family: 'Dongle', sans-serif;
+  font-size: 32px;
+  text-align: center;
+  padding: 100px 20px;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+/* Hanya tampil di layar kecil */
+@media (max-width: 768px) {
+  #mobile-message {
+    display: block;
+  }
+
+  body > *:not(#mobile-message) {
+    display: none !important;
+  }
+}
