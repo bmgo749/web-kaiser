@@ -40,5 +40,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const button = document.getElementById("box-back");
 button.addEventListener("click", () => {
-window.location.href = 'index.html#logoo' // Ganti dengan URL tujuan
+window.location.href = 'index.html' // Ganti dengan URL tujuan
 });
