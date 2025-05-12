@@ -28,7 +28,7 @@
   opacity: 0.9;
 }
 
-@media (max-width:340px) {
+@media (max-width:400px) {
   .credit-section {
   background-color: black;
   color: white;

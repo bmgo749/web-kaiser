@@ -57,7 +57,7 @@ html, body {
   transition: transform 0.6s ease, opacity 0.6s ease;
 }
 
-@media (max-width:340px) {
+@media (max-width:400px) {
   .card {
   flex: 0 0 auto;
   width: 186px;
@@ -205,7 +205,7 @@ html, body {
   background-color: #444; /* Ganti warna saat di-click */
 }
 
-@media (max-width:340px) {
+@media (max-width:400px) {
   .org-text {
     position: absolute;
     top: 8%;

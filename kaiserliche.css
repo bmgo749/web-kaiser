@@ -127,11 +127,11 @@ html, body {
     transform: translateX(0px);
 }
 
-@media (max-width: 340px) {
+@media (max-width: 400px) {
     .navbar {
     position: absolute;
     top: 106px;
-    right: 22px;
+    right: 15%;
     z-index: 2;
 }
 
@@ -182,7 +182,7 @@ html, body {
     position: absolute;
     left: 0;
     top: 0;
-    width: 30px;
+    width: 45px;
     height: auto;
     transform-origin: center;
     transition: transform 1.2s ease-in-out;
@@ -190,10 +190,10 @@ html, body {
 
 .logo-label {
     position: absolute;
-    top: 8px;
+    top: 12px;
     left: 20px;
     font-family: 'Neometra', sans-serif;
-    font-size: 12px;
+    font-size: 19px;
     color: white;
     opacity: 0;
     transition: opacity 1s ease-in-out;
@@ -202,7 +202,7 @@ html, body {
 
 /* Saat hover: logo pindah ke kanan + label muncul */
 .logo-container:hover .logo-img {
-    transform: translateX(110px) rotate(360deg);
+    transform: translateX(163px) rotate(360deg);
     /* HAPUS: opacity: 0; agar logo tidak hilang */
 }
 

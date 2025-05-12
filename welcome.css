@@ -59,7 +59,7 @@
     transition: opacity 2s ease-in-out;
 }
 
-@media (max-width: 340px) {
+@media (max-width: 400px) {
     .welcome-text {
     position: absolute;
     top: 27%;
