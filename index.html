@@ -61,6 +61,55 @@
             width: 20px;
             height: 20px;
         }
+
+        @media (max-width:800px) {
+          .box {
+            text-align: center;
+            top: 57%;
+            right: 27%;
+            position: relative;
+        }
+
+        .box button {
+            color: rgb(255, 255, 255);
+            border: 12px solid rgb(17, 18, 18);
+            border-radius: 25px;
+            padding: 35px 50px;
+            font-weight: 600px;
+            font-family: 'Donpoligraf', sans-serif;
+            font-size: 30px;
+            background: transparent;
+            cursor: pointer;
+            position: relative;
+            margin-top: -10px;
+            margin-left: 50%;
+            overflow: hidden;
+            transition: background 0.3s ease-in-out, color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+        }
+
+        .box button:hover {
+            background: transparent;
+            color: white;
+            box-shadow: 0 0 30px rgb(103, 103, 103);
+        }
+
+        /* Diamond Shape Stars */
+        .stars {
+            position: absolute;
+            width: 12px;
+            height: 14px;
+            background-color: white;
+            transform: rotate(45deg);
+            box-shadow: 0 0 10px white;
+            opacity: 1;
+            transition: transform 0.5s ease-out, opacity 0.5s ease-in-out;
+        }
+
+        .stars.large {
+            width: 15px;
+            height: 15px;
+        }
+        }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -75,11 +124,6 @@
 </head>
 
 <body>
-
-    <div id="mobile-message">
-        <p>LAGI DIBUAT MOBILENYA<br>BERSABAR BUTUH WAKTU 2-3 HARIAN<br>PROGRAMMER NGANTUK</p>
-    </div>
-
 
     <div class="box">
         <button id="glowButton">Our Wiki</button>
@@ -235,7 +279,7 @@
     <nav class="navbar">
         <ul>
             <li><a href="#logo">Home</a></li>
-            <li><a href="constitution.html">Constitution</a></li>
+            <li><a href="https://docs.google.com/document/d/1Nc75KtHdg_jljEkoG81cQ83k50mi_g0Oz0Yy76Ckr9c/edit?usp=drivesdk">Constitution</a></li>
             <li><a href="#aboutUs">About Us</a></li>
         </ul>
     </nav>

@@ -28,6 +28,27 @@
   opacity: 0.9;
 }
 
+@media (max-width:800px) {
+  .credit-section {
+  background-color: black;
+  color: white;
+  text-align: center;
+  padding: 15px 0;
+  position: relative;
+  margin-top: 0px;
+  bottom: 0;
+  width: 100%;
+  font-family: 'Dongle', sans-serif;
+}
+
+.credit-text p {
+  font-size: 8px;
+  margin: 0;
+  letter-spacing: 2px;
+  opacity: 0.9;
+}
+}
+
 .email-text {
   font-size: 14px;
   margin-top: 10px;

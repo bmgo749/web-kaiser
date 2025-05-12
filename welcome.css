@@ -58,3 +58,46 @@
     opacity: 0;
     transition: opacity 2s ease-in-out;
 }
+
+@media (max-width: 800px) {
+    .welcome-text {
+    position: absolute;
+    top: 25%;
+    left: 60px;
+    transform: translateY(-50%);
+    font-size: 66px;
+    font-weight: 900px;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 16px;
+    white-space: nowrap;
+}
+
+.additional-text {
+    position: absolute;
+    top: 34%;
+    left: 72px;
+    transform: translateY(-50%);
+    font-size: 38px;
+    font-weight: 750px;
+    color: white;
+    font-family: 'Dongle Light', sans-serif;
+    letter-spacing: 14px;
+    white-space: nowrap;
+}
+
+#randomText {
+    position: absolute;
+    top: 42%;
+    left: 72px;
+    transform: translateY(-50%);
+    font-size: 27px;
+    font-weight: 750px;
+    color: white;
+    font-family: 'VT323', sans-serif;
+    letter-spacing: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+}
+}

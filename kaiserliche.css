@@ -126,3 +126,89 @@ html, body {
     opacity: 1;
     transform: translateX(0px);
 }
+
+@media (max-width: 800px) {
+    .navbar {
+    position: absolute;
+    top: 63px;
+    right: 60px;
+    z-index: 2;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 40px;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar ul li a {
+    position: relative;
+    text-decoration: none;
+    color: white;
+    font-family: 'Donpoligraf', sans-serif;
+    font-size: 13px;
+    overflow: hidden;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.navbar ul li a:hover {
+    transform: scale(1.12);
+}
+
+.navbar ul li a:hover::after {
+    width: 100%;
+}
+
+.logo-container {
+    position: absolute;
+    top: 46px;
+    left: 20px;
+    z-index: 3;
+    width: 300px;
+    height: 100px;
+    overflow: visible;
+}
+
+.logo-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.logo-img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 40px;
+    height: auto;
+    transform-origin: center;
+    transition: transform 1.2s ease-in-out;
+}
+
+.logo-label {
+    position: absolute;
+    top: 13px;
+    left: 0;
+    font-family: 'Neometra', sans-serif;
+    font-size: 14px;
+    color: white;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    pointer-events: none;
+}
+
+/* Saat hover: logo pindah ke kanan + label muncul */
+.logo-container:hover .logo-img {
+    transform: translateX(107px) rotate(360deg);
+    /* HAPUS: opacity: 0; agar logo tidak hilang */
+}
+
+.logo-container:hover .logo-label {
+    opacity: 1;
+    transform: translateX(0px);
+}
+
+}
