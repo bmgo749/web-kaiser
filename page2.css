@@ -53,32 +53,32 @@
     cursor: pointer; /* ubah mouse menjadi pointer */
 }
 
-@media (max-width:800px) {
+@media (max-width:340px) {
     .about-text a1{
     position: absolute;
     top: 115%;
-    left: 60px;
+    left: 30px;
     transform: translateY(-50%);
-    font-size: 36px;
+    font-size: 14px;
     font-weight: 900px;
     color: white;
     font-family: 'Dongle Light', sans-serif;
-    letter-spacing: 12px;
+    letter-spacing: 3px;
     white-space: nowrap;
 }
 
 .description-box {
     position: absolute;
     margin-top: 250px;
-    margin-left: 49px;
+    margin-left: 19px;
     padding: 30px;
     border: transparent; /* tebal */
     color: white;
     font-family: 'Dongle Light', sans-serif;
-    font-size: 30px;
+    font-size: 20px;
     width: 70%;
     max-width: 800px;
-    border-radius: 8px;
+    border-radius: 6px;
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 

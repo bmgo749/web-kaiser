@@ -57,10 +57,10 @@ html, body {
   transition: transform 0.6s ease, opacity 0.6s ease;
 }
 
-@media (max-width:800px) {
+@media (max-width:340px) {
   .card {
   flex: 0 0 auto;
-  width: 230px;
+  width: 186px;
   height: 450px;
   background-color: rgba(255, 255, 255, 0.05);
   border: 2px solid rgba(255, 255, 255, 0.1);
@@ -168,9 +168,9 @@ html, body {
 .org-text {
     position: absolute;
     top: 10%;
-    left: 29.1%;
+    left: 20%;
     transform: translateY(-50%);
-    font-size: 48px;
+    font-size: 28px;
     font-weight: 750px;
     color: white;
     font-family: 'Dongle Light', sans-serif;
@@ -205,17 +205,17 @@ html, body {
   background-color: #444; /* Ganti warna saat di-click */
 }
 
-@media (max-width:800px) {
+@media (max-width:340px) {
   .org-text {
     position: absolute;
-    top: 10%;
-    left: 12%;
+    top: 8%;
+    left: 9%;
     transform: translateY(-50%);
-    font-size: 28px;
+    font-size: 18px;
     font-weight: 750px;
     color: white;
     font-family: 'Dongle Light', sans-serif;
-    letter-spacing: 14px;
+    letter-spacing: 4px;
     white-space: nowrap;
 }
 
@@ -232,6 +232,6 @@ html, body {
   transition: all 0.3s ease; /* Efek transisi halus */
   position: absolute;
   top: 88%;
-  left: 44%;
+  left: 37%;
 }
 }
