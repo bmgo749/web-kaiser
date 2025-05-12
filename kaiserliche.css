@@ -130,7 +130,7 @@ html, body {
 @media (max-width: 400px) {
     .navbar {
     position: absolute;
-    top: 106px;
+    top: 116px;
     right: 15%;
     z-index: 2;
 }
