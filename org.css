@@ -208,8 +208,8 @@ html, body {
 @media (max-width:400px) {
   .org-text {
     position: absolute;
-    top: 8%;
-    left: 14%;
+    top: 5%;
+    left: 17%;
     transform: translateY(-50%);
     font-size: 18px;
     font-weight: 750px;
