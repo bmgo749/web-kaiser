@@ -114,6 +114,10 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+     display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
     margin: 0;
     padding: 0;
     height: 97%;
