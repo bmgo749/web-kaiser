@@ -6,11 +6,4 @@ jobs:
         run: |
           echo "const firebaseConfig = {" > config.js
           echo "  apiKey: '${{ secrets.APIKEY }}'," >> config.js
-          echo "  authDomain: 'kaiserliche-data.firebaseapp.com'," >> config.js
-          echo "  databaseURL: 'https://kaiserliche-data-default-rtdb.firebaseio.com'," >> config.js
-          echo "  projectId: 'kaiserliche-data'," >> config.js
-          echo "  storageBucket: 'kaiserliche-data.appspot.com'," >> config.js
-          echo "  messagingSenderId: '1035155343303'," >> config.js
-          echo "  appId: '1:1035155343303:web:908a59ebd90bccb605fbe2'," >> config.js
-          echo "  measurementId: 'G-45MB5YEBZS'" >> config.js
           echo "};" >> config.js
