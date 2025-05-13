@@ -3,12 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Admin Dashboard</title>
+  <link rel="icon" href="Tak_berjudul184_20250507221919.png" />
   <link rel="stylesheet" href="dashboard.css">
-  <style>
-    body {
-      display: none; /* Sembunyikan seluruh body sampai verifikasi selesai */
-    }
-  </style>
 </head>
 <body>
   <h1>Admin Dashboard</h1>
@@ -55,7 +51,7 @@
       }
 
       try {
-        const snapshot = await db.ref(`logins/${tipe}/isLoggedInAdmin`).get();
+        const snapshot = await db.ref(logins/${tipe}/isLoggedInAdmin).get();
         const firebaseStatus = snapshot.val();
 
         if (firebaseStatus !== true) {
@@ -64,22 +60,19 @@
           return;
         }
 
-        // ✅ Jika lolos verifikasi, isi tabel dan tampilkan body
+        // ✅ Jika lolos verifikasi, isi tabel
         const users = JSON.parse(localStorage.getItem("users")) || [];
         const tbody = document.getElementById("userTable");
 
         users.forEach(user => {
           const row = document.createElement("tr");
-          row.innerHTML = `
+          row.innerHTML = 
             <td>${user.id}</td>
             <td>${user.dangerLevel}</td>
             <td>${user.admin}</td>
-          `;
+          ;
           tbody.appendChild(row);
         });
-
-        // Tampilkan body setelah verifikasi selesai
-        document.body.style.display = "block";
 
       } catch (error) {
         console.error("Gagal cek status login:", error);
@@ -89,4 +82,4 @@
     })();
   </script>
 </body>
-</html>
+</html
