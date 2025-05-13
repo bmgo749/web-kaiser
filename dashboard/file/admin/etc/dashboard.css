@@ -1,0 +1,55 @@
+/* dashboard.css */
+
+/* Gaya latar belakang */
+body {
+  background-image: url("Tak_berjudul196_20250510191632.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Judul */
+h1 {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 36px;
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
+}
+
+/* Tabel */
+table {
+  width: 80%;
+  margin: 40px auto;
+  border-collapse: collapse;
+  background-color: rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Header tabel */
+th {
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+  border-bottom: 1px solid #fff;
+}
+
+/* Sel tabel */
+td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Hover efek baris */
+tr:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transition: 0.3s;
+}

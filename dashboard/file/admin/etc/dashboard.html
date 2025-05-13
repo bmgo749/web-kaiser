@@ -1,12 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SECRET</title>
-    <link rel="icon" href="Tak_berjudul184_20250507221919.png" />
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <script>
+  if (localStorage.getItem("isLoggedInAdmin") !== "true") {
+    alert("Akses ditolak. Anda belum login sebagai admin.");
+    window.location.href = "index.html";
+  }
+  </script>
 </head>
 <body>
-    Sedang dibuat mohon bersabar
+  <h1>Admin Dashboard</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Danger Level</th>
+        <th>Admin</th>
+      </tr>
+    </thead>
+    <tbody id="userTable"></tbody>
+  </table>
+
+  <script>
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const tbody = document.getElementById("userTable");
+
+    users.forEach(user => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${user.id}</td>
+        <td>${user.dangerLevel}</td>
+        <td>${user.admin}</td>
+      `;
+      tbody.appendChild(row);
+    });
+  </script>
 </body>
 </html>

@@ -4,49 +4,73 @@ setTimeout(() => {
   window.location.href = "index.html";
 }, 5 * 60 * 1000);
 
-// Data Tipe Login
-const loginData = {
-  A: { kode: "KRRT7362Kt@t2", pass: "649271@109213" },
-  B: { kode: "POLE8932Bc@r3", pass: "852914@298321" },
-  C: { kode: "XZZL9921Cc@q4", pass: "194021@181331" },
-  D: { kode: "TRAA1293Dd@f5", pass: "328194@194222" }
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDtuu09K1IIeFHebBNITSlKt-HDsNhXBxY",
+  authDomain: "kaiserliche-data.firebaseapp.com",
+  databaseURL: "https://kaiserliche-data-default-rtdb.firebaseio.com",
+  projectId: "kaiserliche-data",
+  storageBucket: "kaiserliche-data.firebasestorage.app",
+  messagingSenderId: "1035155343303",
+  appId: "1:1035155343303:web:908a59ebd90bccb605fbe2",
+  measurementId: "G-45MB5YEBZS"
 };
 
-// Cek tipe berdasarkan input
-function getTipeFromInput(kode, pass) {
-  for (let tipe in loginData) {
-    if (loginData[tipe].kode === kode && loginData[tipe].pass === pass) {
-      return tipe;
-    }
-  }
-  return null;
-}
-
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 // Fungsi login
-function confirmLogin() {
+async function confirmLogin() {
   const inputs = document.querySelectorAll(".input-field");
-  const kode = inputs[0].value.trim();
-  const pass = inputs[1].value.trim();
+  const kodeInput = inputs[0].value.trim();
+  const passInput = inputs[1].value.trim();
 
-  const tipe = getTipeFromInput(kode, pass);
+  const loginRef = ref(db, "logins");
 
-  if (!tipe) {
-    alert("Kode atau password salah.");
-    return;
+  try {
+    const snapshot = await get(loginRef);
+
+    if (!snapshot.exists()) {
+      alert("Data login tidak ditemukan.");
+      return;
+    }
+
+    const data = snapshot.val();
+    let tipeDitemukan = null;
+
+    // Cari kecocokan
+    for (let tipe in data) {
+      const { kode, pass, used } = data[tipe];
+      if (kode === kodeInput && pass === passInput) {
+        if (used === true) {
+          alert(`Tipe ${tipe} sudah digunakan.`);
+          return;
+        } else {
+          tipeDitemukan = tipe;
+          break;
+        }
+      }
+    }
+
+    if (!tipeDitemukan) {
+      alert("Kode atau password salah.");
+      return;
+    }
+
+    // Tandai sebagai sudah digunakan di Firebase
+    await update(ref(db, `logins/${tipeDitemukan}`), { used: true });
+
+    alert(`Login berhasil sebagai tipe ${tipeDitemukan}.`);
+    window.location.href = "dashboard.html";
+  } catch (error) {
+    console.error(error);
+    alert("Terjadi kesalahan saat login.");
   }
-
-  // Cek apakah tipe sudah dipakai
-  const usedTypes = JSON.parse(localStorage.getItem("usedTypes")) || [];
-
-  if (usedTypes.includes(tipe)) {
-    alert(`Tipe ${tipe} sudah digunakan. Silakan gunakan tipe lain.`);
-    return;
-  }
-
-  // Tandai tipe sebagai sudah digunakan
-  usedTypes.push(tipe);
-  localStorage.setItem("usedTypes", JSON.stringify(usedTypes));
-
-  alert(`Login berhasil sebagai tipe ${tipe}.`);
-  window.location.href = "dashboard.html";
 }
