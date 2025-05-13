@@ -1,4 +1,4 @@
-// admin.js
+// Konfigurasi Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyDtuu09K1IIeFHebBNITSlKt-HDsNhXBxY",
   authDomain: "kaiserliche-data.firebaseapp.com",
@@ -11,11 +11,10 @@ const firebaseConfig = {
 };
 
 // Inisialisasi Firebase
-const app = firebase.initializeApp(firebaseConfig);
-const analytics = firebase.getAnalytics(app);
-const db = firebase.getDatabase(app);
+firebase.initializeApp(firebaseConfig);
+firebase.analytics();
+const db = firebase.database();
 
-// Fungsi login
 async function confirmLogin() {
   console.log("Tombol diklik!");
 
@@ -23,10 +22,10 @@ async function confirmLogin() {
   const kodeInput = inputs[0].value.trim();
   const passInput = inputs[1].value.trim();
 
-  const loginRef = firebase.ref(db, "logins");
+  const loginRef = db.ref("logins");
 
   try {
-    const snapshot = await firebase.get(loginRef);
+    const snapshot = await loginRef.get();
     if (!snapshot.exists()) {
       alert("Data login tidak ditemukan.");
       return;
@@ -53,7 +52,7 @@ async function confirmLogin() {
       return;
     }
 
-    await firebase.update(firebase.ref(db, `logins/${tipeDitemukan}`), { used: true });
+    await db.ref(`logins/${tipeDitemukan}`).update({ used: true });
 
     alert(`Login berhasil sebagai tipe ${tipeDitemukan}.`);
     window.location.href = "dashboard.html";
