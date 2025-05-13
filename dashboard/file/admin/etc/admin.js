@@ -53,6 +53,8 @@ async function confirmLogin() {
     }
 
     await db.ref(`logins/${tipeDitemukan}`).update({ used: true });
+    localStorage.setItem("isLoggedInAdmin", "true");
+    localStorage.setItem("users", JSON.stringify(users));
 
     alert(`Login berhasil sebagai tipe ${tipeDitemukan}.`);
     window.location.href = "dashboard.html";
