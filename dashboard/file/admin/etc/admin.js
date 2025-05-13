@@ -1,5 +1,5 @@
-// Konfigurasi Firebase
-const firebaseConfig = {
+// Inisialisasi Firebase
+firebase.initializeApp({
   apiKey: "AIzaSyDtuu09K1IIeFHebBNITSlKt-HDsNhXBxY",
   authDomain: "kaiserliche-data.firebaseapp.com",
   databaseURL: "https://kaiserliche-data-default-rtdb.firebaseio.com",
@@ -8,13 +8,12 @@ const firebaseConfig = {
   messagingSenderId: "1035155343303",
   appId: "1:1035155343303:web:908a59ebd90bccb605fbe2",
   measurementId: "G-45MB5YEBZS"
-};
+});
 
-// Inisialisasi Firebase
-firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 const db = firebase.database();
 
+// Fungsi konfirmasi login
 async function confirmLogin() {
   console.log("Tombol diklik!");
 
@@ -52,14 +51,27 @@ async function confirmLogin() {
       return;
     }
 
-    await db.ref(`logins/${tipeDitemukan}`).update({ used: true });
+    // Tandai sebagai digunakan dan login aktif
+    await db.ref(`logins/${tipeDitemukan}`).update({
+      used: true,
+      isLoggedInAdmin: true
+    });
+
+    // Simpan info login di localStorage
+    localStorage.setItem("loginTipe", tipeDitemukan);
     localStorage.setItem("isLoggedInAdmin", "true");
-    localStorage.setItem("users", JSON.stringify(users));
 
     alert(`Login berhasil sebagai tipe ${tipeDitemukan}.`);
     window.location.href = "dashboard.html";
+
   } catch (error) {
-    console.error(error);
+    console.error("Login error:", error);
     alert("Terjadi kesalahan saat login.");
   }
 }
+
+// Timer logout otomatis (5 menit)
+setTimeout(() => {
+  alert("Waktu habis. Mengalihkan ke halaman utama...");
+  window.location.href = "index.html";
+}, 5 * 60 * 1000);
