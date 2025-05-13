@@ -4,63 +4,6 @@
   <meta charset="UTF-8">
   <title>Admin Dashboard</title>
   <link rel="stylesheet" href="dashboard.css">
-  <script>
-    // Inisialisasi Firebase
-firebase.initializeApp({
-  apiKey: "AIzaSyDtuu09K1IIeFHebBNITSlKt-HDsNhXBxY",
-  authDomain: "kaiserliche-data.firebaseapp.com",
-  databaseURL: "https://kaiserliche-data-default-rtdb.firebaseio.com",
-  projectId: "kaiserliche-data",
-  storageBucket: "kaiserliche-data.appspot.com",
-  messagingSenderId: "1035155343303",
-  appId: "1:1035155343303:web:908a59ebd90bccb605fbe2"
-});
-
-const db = firebase.database();
-
-// Cek login dan status admin
-(async function verifyAdmin() {
-  const tipe = localStorage.getItem("loginTipe");
-  const localStatus = localStorage.getItem("isLoggedInAdmin");
-
-  if (!tipe || localStatus !== "true") {
-    alert("Akses ditolak. Anda belum login sebagai admin.");
-    window.location.href = "index.html";
-    return;
-  }
-
-  try {
-    const snapshot = await db.ref(`logins/${tipe}/isLoggedInAdmin`).get();
-    const firebaseStatus = snapshot.val();
-
-    if (firebaseStatus !== true) {
-      alert("Akses ditolak. Login admin sudah tidak aktif.");
-      window.location.href = "index.html";
-      return;
-    }
-
-    // ✅ Jika lolos verifikasi, isi tabel
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const tbody = document.getElementById("userTable");
-
-    users.forEach(user => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${user.id}</td>
-        <td>${user.dangerLevel}</td>
-        <td>${user.admin}</td>
-      `;
-      tbody.appendChild(row);
-    });
-
-  } catch (error) {
-    console.error("Gagal cek status login:", error);
-    alert("Terjadi kesalahan saat verifikasi login admin.");
-    window.location.href = "index.html";
-  }
-})();
-
-  </script>
 </head>
 <body>
   <h1>Admin Dashboard</h1>
@@ -79,7 +22,63 @@ const db = firebase.database();
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js"></script>
 
-  <!-- Script dashboard -->
-  <script src="dashboard.js"></script>
+  <!-- Script pengecekan dan isi tabel -->
+  <script>
+    // Inisialisasi Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyDtuu09K1IIeFHebBNITSlKt-HDsNhXBxY",
+      authDomain: "kaiserliche-data.firebaseapp.com",
+      databaseURL: "https://kaiserliche-data-default-rtdb.firebaseio.com",
+      projectId: "kaiserliche-data",
+      storageBucket: "kaiserliche-data.appspot.com",
+      messagingSenderId: "1035155343303",
+      appId: "1:1035155343303:web:908a59ebd90bccb605fbe2"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // Fungsi verifikasi admin dan menampilkan data
+    (async function verifyAdminAndShowData() {
+      const tipe = localStorage.getItem("loginTipe");
+      const localStatus = localStorage.getItem("isLoggedInAdmin");
+
+      if (!tipe || localStatus !== "true") {
+        alert("Akses ditolak. Anda belum login sebagai admin.");
+        window.location.href = "index.html";
+        return;
+      }
+
+      try {
+        const snapshot = await db.ref(`logins/${tipe}/isLoggedInAdmin`).get();
+        const firebaseStatus = snapshot.val();
+
+        if (firebaseStatus !== true) {
+          alert("Akses ditolak. Login admin sudah tidak aktif.");
+          window.location.href = "index.html";
+          return;
+        }
+
+        // ✅ Jika lolos verifikasi, isi tabel
+        const users = JSON.parse(localStorage.getItem("users")) || [];
+        const tbody = document.getElementById("userTable");
+
+        users.forEach(user => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${user.id}</td>
+            <td>${user.dangerLevel}</td>
+            <td>${user.admin}</td>
+          `;
+          tbody.appendChild(row);
+        });
+
+      } catch (error) {
+        console.error("Gagal cek status login:", error);
+        alert("Terjadi kesalahan saat verifikasi login admin.");
+        window.location.href = "index.html";
+      }
+    })();
+  </script>
 </body>
 </html>
