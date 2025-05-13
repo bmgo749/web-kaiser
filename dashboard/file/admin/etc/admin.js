@@ -1,9 +1,4 @@
 // admin.js
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getDatabase, ref, get, update } from "firebase/database";
-
-// Konfigurasi Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyDtuu09K1IIeFHebBNITSlKt-HDsNhXBxY",
   authDomain: "kaiserliche-data.firebaseapp.com",
@@ -15,22 +10,23 @@ const firebaseConfig = {
   measurementId: "G-45MB5YEBZS"
 };
 
-// Inisialisasi
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const db = getDatabase(app);
+// Inisialisasi Firebase
+const app = firebase.initializeApp(firebaseConfig);
+const analytics = firebase.getAnalytics(app);
+const db = firebase.getDatabase(app);
 
 // Fungsi login
-export async function confirmLogin() {
+async function confirmLogin() {
+  console.log("Tombol diklik!");
+
   const inputs = document.querySelectorAll(".input-field");
   const kodeInput = inputs[0].value.trim();
   const passInput = inputs[1].value.trim();
 
-  const loginRef = ref(db, "logins");
+  const loginRef = firebase.ref(db, "logins");
 
   try {
-    const snapshot = await get(loginRef);
-
+    const snapshot = await firebase.get(loginRef);
     if (!snapshot.exists()) {
       alert("Data login tidak ditemukan.");
       return;
@@ -57,7 +53,7 @@ export async function confirmLogin() {
       return;
     }
 
-    await update(ref(db, `logins/${tipeDitemukan}`), { used: true });
+    await firebase.update(firebase.ref(db, `logins/${tipeDitemukan}`), { used: true });
 
     alert(`Login berhasil sebagai tipe ${tipeDitemukan}.`);
     window.location.href = "dashboard.html";
