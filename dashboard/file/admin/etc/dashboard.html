@@ -3,8 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <title>Admin Dashboard</title>
-  <link rel="icon" href="Tak_berjudul184_20250507221919.png" />
   <link rel="stylesheet" href="dashboard.css">
+  <style>
+    body {
+      display: none; /* Sembunyikan seluruh body sampai verifikasi selesai */
+    }
+  </style>
 </head>
 <body>
   <h1>Admin Dashboard</h1>
@@ -60,7 +64,7 @@
           return;
         }
 
-        // ✅ Jika lolos verifikasi, isi tabel
+        // ✅ Jika lolos verifikasi, isi tabel dan tampilkan body
         const users = JSON.parse(localStorage.getItem("users")) || [];
         const tbody = document.getElementById("userTable");
 
@@ -73,6 +77,9 @@
           `;
           tbody.appendChild(row);
         });
+
+        // Tampilkan body setelah verifikasi selesai
+        document.body.style.display = "block";
 
       } catch (error) {
         console.error("Gagal cek status login:", error);
