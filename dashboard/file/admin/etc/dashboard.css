@@ -1,7 +1,7 @@
 /* dashboard.css */
 
 /* Gaya latar belakang */
-body {
+html, body {
   background-image: url("Tak_berjudul196_20250510191632.png");
   background-size: cover;
   background-position: center;
