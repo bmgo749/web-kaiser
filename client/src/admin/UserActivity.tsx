@@ -52,7 +52,7 @@ export default function UserActivity({ addAdminLog }: UserActivityProps) {
       });
 
       // Track page visits by sending activity when component mounts
-      fetch('/api/user-activity', {
+      fetch('https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev/api/user-activity', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
