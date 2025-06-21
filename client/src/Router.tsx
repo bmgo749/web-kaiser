@@ -8,7 +8,7 @@ export default function Router() {
     // Track user activity when app loads
     const trackActivity = async () => {
       try {
-        await fetch('/api/user-activity', {
+        await fetch('https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev/api/user-activity', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 
