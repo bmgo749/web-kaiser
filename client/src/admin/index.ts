@@ -6,11 +6,9 @@ export { default as WhatsAppMessaging } from './WhatsAppMessaging';
 export { default as AdminLog } from './AdminLog';
 export { default as UserProfile } from './UserProfile';
 export { default as TerminalLog } from './TerminalLog';
+import { io } from 'socket.io-client';
 
-const io = new SocketIOServer(httpServer, {
-  cors: {
-    origin: ["http://localhost:5000", "https://kaiserliche.my.id", "https://*.replit.dev", "https://*.replit.app"],
-    methods: ["GET", "POST"],
-    credentials: true
-  },
+const socket = io('https://kaiserliche.my.id', {
+  transports: ['websocket'],
+  withCredentials: true,
 });
