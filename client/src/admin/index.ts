@@ -6,17 +6,3 @@ export { default as WhatsAppMessaging } from './WhatsAppMessaging';
 export { default as AdminLog } from './AdminLog';
 export { default as UserProfile } from './UserProfile';
 export { default as TerminalLog } from './TerminalLog';
-import { io } from 'socket.io-client';
-
-const socket = io('https://api.kaiserliche.my.id', {
-  transports: ['websocket'],
-  withCredentials: true,
-});
-
-origin: [
-  "http://localhost:5000",
-  "https://api.kaiserliche.my.id",
-  "https://*.replit.dev",
-  "https://*.replit.app"
-]
-
