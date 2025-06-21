@@ -304,7 +304,10 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
     addAdminLog('Template Creation', `Membuat template: ${newTemplateName}`);
     
     try {
-      const baseUrl = window.location.hostname === 'localhost' ? '' : window.location.origin;
+      const baseUrl =
+        window.location.hostname === 'localhost'
+        ? 'http://localhost:5000'
+        : 'https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev';
       const url = `${baseUrl}/api/templates`;
       
       console.log('Sending POST request to:', url);
