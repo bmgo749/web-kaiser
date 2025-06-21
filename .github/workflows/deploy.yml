@@ -1,0 +1,58 @@
+ name: Deploy Kaiserliche Admin System
+
+ on:
+   push:
+     branches: [ main, master ]
+   pull_request:
+     branches: [ main, master ]
+
+ jobs:
+   build-and-deploy:
+     runs-on: ubuntu-latest
+
+     steps:
+     - name: Checkout code
+       uses: actions/checkout@v4
+
+     - name: Setup Node.js
+       uses: actions/setup-node@v4
+       with:
+         node-version: '20'
+         cache: 'npm'
+
+     - name: Install dependencies
+       run: npm ci
+
+     - name: Build project
+       run: npm run build
+       env:
+         NODE_ENV: production
+
+     - name: Run tests (if available)
+       run: npm test --if-present
+
+     - name: Deploy to production
+       if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+       run: |
+         echo "Deploy to your hosting platform here"
+         echo "Configure environment variables:"
+         echo "DATABASE_URL, NODE_ENV=production, PORT=80"
+
+     # Optional: Deploy to GitHub Pages for static frontend
+     - name: Deploy to GitHub Pages
+       if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+       uses: peaceiris/actions-gh-pages@v3
+       with:
+         github_token: ${{ secrets.GITHUB_TOKEN }}
+         publish_dir: ./dist/public
+
+     # Optional: Notify deployment status
+     - name: Deployment notification
+       if: always()
+       run: |
+         if [ ${{ job.status }} == 'success' ]; then
+           echo "✅ Deployment successful!"
+           echo "Admin Panel: https://your-domain.com/admin-ksr-secure-panel-2024"
+         else
+           echo "❌ Deployment failed!"
+         fi
