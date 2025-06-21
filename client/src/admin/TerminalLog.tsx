@@ -26,22 +26,24 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
         withCredentials: true
     });
 
-    socketRef.current.on('connect', () => {
+    socketRef.current = socket
+
+    socket.on('connect', () => {
       setIsConnected(true);
     });
 
-    socketRef.current.on('disconnect', () => {
+    socket.on('disconnect', () => {
       setIsConnected(false);
     });
 
-    socketRef.current.on('terminalLog', (logEntry: any) => {
+    socket.on('terminalLog', (logEntry: any) => {
       setLogs(prev => [...prev, {
         ...logEntry,
         timestamp: new Date(logEntry.timestamp)
       }]);
     });
 
-    socketRef.current.on('existingLogs', (existingLogs: any[]) => {
+    socket.on('existingLogs', (existingLogs: any[]) => {
       setLogs(existingLogs.map(log => ({
         ...log,
         timestamp: new Date(log.timestamp)
@@ -64,8 +66,8 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
       });
 
     return () => {
-      if (socketRef.current) {
-        socketRef.current.disconnect();
+      if (socket) {
+        socket.disconnect();
       }
     };
   }, [addAdminLog]);
