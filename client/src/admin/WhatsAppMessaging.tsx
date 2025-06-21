@@ -241,7 +241,10 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
     setQrCode('');
     
     try {
-      const baseUrl = window.location.hostname === 'localhost' ? '' : window.location.origin;
+      const baseUrl =
+        window.location.hostname === 'localhost'
+        ? 'http://localhost:5000'
+        : 'https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev';
       const response = await fetch(`${baseUrl}/api/whatsapp/generate-qr`, {
         method: 'POST',
         headers: {
@@ -266,7 +269,10 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
 
   const disconnectWhatsApp = async () => {
     try {
-      const baseUrl = window.location.hostname === 'localhost' ? '' : window.location.origin;
+      const baseUrl =
+        window.location.hostname === 'localhost'
+        ? 'http://localhost:5000'
+        : 'https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev';
       const response = await fetch(`${baseUrl}/api/whatsapp/disconnect`, {
         method: 'POST',
         headers: {
@@ -378,7 +384,10 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
     const template = messageTemplates.find(t => t.id === templateId);
     
     try {
-      const baseUrl = window.location.hostname === 'localhost' ? '' : window.location.origin;
+      const baseUrl =
+        window.location.hostname === 'localhost'
+        ? 'http://localhost:5000'
+        : 'https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev';
       const response = await fetch(`${baseUrl}/api/templates/${templateId}`, {
         method: 'DELETE',
         credentials: 'same-origin'
@@ -444,7 +453,10 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
     addAdminLog('WhatsApp Message', `Mengirim pesan ke grup ID: ${groupId}`);
 
     try {
-      const baseUrl = window.location.hostname === 'localhost' ? '' : window.location.origin;
+      const baseUrl =
+        window.location.hostname === 'localhost'
+        ? 'http://localhost:5000'
+        : 'https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev';
       const response = await fetch(`${baseUrl}/api/whatsapp/send-message`, {
         method: 'POST',
         headers: {
