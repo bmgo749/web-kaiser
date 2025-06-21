@@ -21,7 +21,7 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
 
   useEffect(() => {
     // Connect to Socket.IO server
-    socketRef.current = io('http://localhost:5000', {
+    socketRef.current = io(window.location.origin, {
         transports: ['websocket'],
         withCredentials: true
     });
