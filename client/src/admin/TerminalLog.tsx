@@ -77,7 +77,7 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
   const clearLogs = async () => {
     try {
       // Clear logs on server side
-      const response = await fetch('/api/whatsapp/clear-logs', {
+      const response = await fetch('https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev/api/whatsapp/clear-logs', {
         method: 'POST'
       });
       
