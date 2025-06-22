@@ -30,7 +30,7 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
         if (Array.isArray(data.logs)) {
           setLogs(data.logs.map((log: any) => ({
             ...log,
-            timestamp: new Date(log.timestamp),
+            timestamp: log.timestamp ? new Date(log.timestamp) : new Date(),
           })));
         } else {
           console.warn('⚠️ logs is not an array:', data.logs);
