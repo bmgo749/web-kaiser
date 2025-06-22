@@ -79,7 +79,7 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
     try {
       setTemplatesLoading(true);
       console.log('Syncing with server for permanent template storage...');
-      const baseUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev;
+      const baseUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : 'https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev';
       const response = await fetch(`${baseUrl}/api/templates`, {
         credentials: 'same-origin'
       });
@@ -127,7 +127,7 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
     // NO polling, NO intervals - templates are permanent
     
     // Initialize socket connection
-    const socketUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev;
+    const socketUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : 'https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev';
     console.log('Connecting to socket at:', socketUrl);
     
     socketRef.current = io(socketUrl, {
