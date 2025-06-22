@@ -12,7 +12,7 @@ const socket: Socket = io(baseUrl, {
   reconnection: true,
   reconnectionAttempts: 9999,
   reconnectionDelay: 0,
-  timeout: 5000
+  timeout: 50000
 });
 
 // Optional: log
