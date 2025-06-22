@@ -1,18 +1,18 @@
 // src/socket.ts
-import { io, Socket } from 'socket.io-client';
+import { io } from 'socket.io-client';
 
-const baseUrl = window.location.hostname === 'localhost'
-  ? 'http://localhost:5000'
-  : 'https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev';
+const baseUrl =
+  window.location.hostname === 'localhost'
+    ? 'http://localhost:5000'
+    : 'https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev';
 
-const socket: Socket = io(baseUrl, {
+const socket = io(baseUrl, {
   transports: ['websocket'],
   withCredentials: true,
-  autoConnect: true,
-  reconnection: true,
-  reconnectionAttempts: 9999,
-  reconnectionDelay: 0,
-  timeout: 50000
+  autoConnect: true, // otomatis konek
+  reconnection: true, // reconnect otomatis
+  reconnectionAttempts: 99,
+  reconnectionDelay: 1000
 });
 
 export default socket;
