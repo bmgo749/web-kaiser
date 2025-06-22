@@ -37,7 +37,7 @@ export default function UserActivity({ addAdminLog }: UserActivityProps) {
     
     try {
       // Set up real user activity tracking
-      socket = io();
+      socket = io('https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev');
       
       socket.on('userActivity', (activity: any) => {
         const newActivity: UserActivityEntry = {
