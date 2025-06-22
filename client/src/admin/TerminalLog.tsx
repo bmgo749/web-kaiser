@@ -60,6 +60,8 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
 
     return () => {
       socket.off('terminalLog', handleTerminalLog);
+      socket.off('connect');
+      socket.off('disconnect');
     };
   }, []);
 
