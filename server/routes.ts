@@ -150,7 +150,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Connection status is now managed only through socket events
 
   app.get('/api/whatsapp/logs', (req, res) => {
-    res.json({ logs: terminalLogs });
+    res.json({ logs: terminalLog });
   });
 
   app.post('/api/whatsapp/clear-logs', (req, res) => {
