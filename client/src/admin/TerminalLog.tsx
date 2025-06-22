@@ -5,7 +5,7 @@ import { io } from 'socket.io-client';
 import { socket } from '../socket';
 
 interface TerminalLogEntry {
-  timestamp: log.timestamp ? new Date(log.timestamp) : new Date();
+  timestamp: Date;
   message: string;
   level: 'info' | 'warn' | 'error';
 }
@@ -57,7 +57,7 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
     socket.on('terminalLog', (log: any) => {
       setLogs(prevLogs => [
         ...prevLogs,
-        { ...log, timestamp: new Date(log.timestamp) },
+        { ...log, timestamp: log.timestamp ? new Data(log.timestamp) : new Date() },
       ]);
     });
   }, [addAdminLog]);
