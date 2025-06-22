@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent, Button, Badge } from './ui-components';
 import { Terminal, Download, Trash2 } from 'lucide-react';
 import { io } from 'socket.io-client';
-import { socket } from 'src/socket';
+import { socket } from '../../socket.ts';
 
 interface TerminalLogEntry {
   timestamp: Date;
