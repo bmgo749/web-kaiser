@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, Button, Badge } from './ui-components';
 import { Terminal, Trash2, Download } from 'lucide-react';
 import { io, Socket } from 'socket.io-client';
