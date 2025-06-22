@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, Button, Badge } from './ui-components';
-import { Terminal, Trash2, Download } from 'lucide-react';
-import { io, Socket } from 'socket.io-client';
+import React, { useEffect, useRef, useState } from 'react';
+import { Card, CardHeader, CardTitle, CardContent, Button, Badge } from './ui-components';
+import { Terminal, Download, Trash2 } from 'lucide-react';
+import { io } from 'socket.io-client';
 
-interface LogEntry {
+interface TerminalLogEntry {
   timestamp: Date;
   message: string;
-  level: 'info' | 'error' | 'warn';
+  level: 'info' | 'warn' | 'error';
 }
 
 interface TerminalLogProps {
@@ -14,19 +14,38 @@ interface TerminalLogProps {
 }
 
 export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
-  const [logs, setLogs] = useState<LogEntry[]>([]);
+  const [logs, setLogs] = useState<TerminalLogEntry[]>([]);
   const [isConnected, setIsConnected] = useState(false);
-  const socketRef = useRef<Socket | null>(null);
   const logsEndRef = useRef<HTMLDivElement>(null);
+  const socketRef = useRef<any>(null);
 
   useEffect(() => {
-    // Connect to Socket.IO server
-    const socket = io("https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev", {
-        transports: ["websocket"],
-        withCredentials: true
+    const baseUrl =
+      window.location.hostname === 'localhost'
+        ? 'http://localhost:5000'
+        : 'https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev';
+
+    fetch(`${baseUrl}/api/whatsapp/logs`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.logs) {
+          setLogs(
+            data.logs.map((log: any) => ({
+              ...log,
+              timestamp: new Date(log.timestamp),
+            }))
+          );
+        }
+      })
+      .catch(error => {
+        console.error('Failed to fetch logs:', error);
+      });
+
+    const socket = io(baseUrl, {
+      transports: ['websocket', 'polling'],
     });
 
-    socketRef.current = socket
+    socketRef.current = socket;
 
     socket.on('connect', () => {
       setIsConnected(true);
@@ -36,60 +55,63 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
       setIsConnected(false);
     });
 
-    socket.on('terminalLog', (logEntry: any) => {
-      setLogs(prev => [...prev, {
-        ...logEntry,
-        timestamp: new Date(logEntry.timestamp)
-      }]);
+    socket.on('terminalLog', (log: any) => {
+      setLogs(prevLogs => [
+        ...prevLogs,
+        { ...log, timestamp: new Date(log.timestamp) },
+      ]);
     });
 
-    socket.on('existingLogs', (existingLogs: any[]) => {
-      setLogs(existingLogs.map(log => ({
-        ...log,
-        timestamp: new Date(log.timestamp)
-      })));
-    });
-
-    // Fetch existing logs on component mount
-    const baseUrl = window.location.hostname === 'localhost'
-      ? 'http://localhost:5000'
-      : 'https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev/';
-
-    fetch(`${baseUrl}/api/whatsapp/logs`)
-    .then(res => res.json())
-    .then(data => {
-      if (data.logs) {
-       setLogs(data.logs.map((log: any) => ({
-          ...log,
-          timestamp: new Date(log.timestamp)
-       })));
+    return () => {
+      if (socket) {
+        socket.disconnect();
       }
-    })
-    .catch(error => {
-      console.error('Failed to fetch logs:', error);
-    });
+    };
+  }, [addAdminLog]);
 
-  // Removed auto-scroll to allow manual scrolling
+  const getLevelColor = (level: string) => {
+    switch (level) {
+      case 'info':
+        return 'bg-blue-600';
+      case 'warn':
+        return 'bg-yellow-600';
+      case 'error':
+        return 'bg-red-600';
+      default:
+        return 'bg-gray-600';
+    }
+  };
+
+  const getLevelTextColor = (level: string) => {
+    switch (level) {
+      case 'info':
+        return 'text-blue-300';
+      case 'warn':
+        return 'text-yellow-300';
+      case 'error':
+        return 'text-red-300';
+      default:
+        return 'text-gray-300';
+    }
+  };
 
   const clearLogs = async () => {
+    const baseUrl =
+      window.location.hostname === 'localhost'
+        ? 'http://localhost:5000'
+        : 'https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev';
+
     try {
-      // Clear logs on server side
-      const response = await fetch('https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev/api/whatsapp/clear-logs', {
-        method: 'POST'
+      const res = await fetch(`${baseUrl}/api/whatsapp/clear-logs`, {
+        method: 'POST',
       });
-      
-      if (response.ok) {
+      const data = await res.json();
+      if (data.success) {
         setLogs([]);
-        addAdminLog('Terminal Log', 'All terminal logs cleared from server and client');
-      } else {
-        // Fallback to client-side clear
-        setLogs([]);
-        addAdminLog('Terminal Log', 'Terminal logs cleared locally');
+        addAdminLog('Terminal Log', 'Logs cleared successfully');
       }
     } catch (error) {
-      // Fallback to client-side clear
-      setLogs([]);
-      addAdminLog('Terminal Log', 'Terminal logs cleared locally');
+      console.error('Failed to clear logs:', error);
     }
   };
 
@@ -99,58 +121,23 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
       return;
     }
 
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const logData = [
-      '='.repeat(80),
-      'KAISERLICHE ADMIN PANEL - TERMINAL LOGS',
-      `Exported: ${new Date().toLocaleString()}`,
-      `Total Logs: ${logs.length}`,
-      '='.repeat(80),
-      '',
-      ...logs.map(log => 
-        `[${log.timestamp.toLocaleString()}] [${log.level.toUpperCase()}] ${log.message}`
-      ),
-      '',
-      '='.repeat(80),
-      'End of Log Export'
-    ].join('\n');
+    const csvContent = logs
+      .map(
+        log =>
+          `"${log.timestamp.toISOString()}","${log.level.toUpperCase()}","${log.message.replaceAll('"', '""')}"`
+      )
+      .join('\n');
 
-    const blob = new Blob([logData], { type: 'text/plain;charset=utf-8' });
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
+
     const a = document.createElement('a');
     a.href = url;
-    a.download = `kaiserliche-terminal-logs-${timestamp}.txt`;
-    a.style.display = 'none';
-    document.body.appendChild(a);
+    a.download = `terminal-logs-${new Date().toISOString()}.csv`;
     a.click();
-    document.body.removeChild(a);
     URL.revokeObjectURL(url);
 
-    addAdminLog('Terminal Log', `${logs.length} terminal logs exported successfully`);
-  };
-
-  const getLevelColor = (level: string) => {
-    switch (level) {
-      case 'error':
-        return 'bg-red-600';
-      case 'warn':
-        return 'bg-yellow-600';
-      case 'info':
-      default:
-        return 'bg-blue-600';
-    }
-  };
-
-  const getLevelTextColor = (level: string) => {
-    switch (level) {
-      case 'error':
-        return 'text-red-300';
-      case 'warn':
-        return 'text-yellow-300';
-      case 'info':
-      default:
-        return 'text-blue-300';
-    }
+    addAdminLog('Terminal Log', 'Logs exported as CSV');
   };
 
   return (
@@ -191,8 +178,6 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
       <CardContent>
         <div className="bg-black rounded-lg p-4 font-mono text-sm">
           <div className="h-96 overflow-y-auto" style={{ scrollbarWidth: 'thin', scrollbarColor: '#4B5563 #1F2937' }}>
-
-            
             {logs.length === 0 ? (
               <div className="text-gray-500 text-center py-8">
                 No logs available. Start WhatsApp service to see logs.
@@ -204,22 +189,18 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
                     <span className="text-gray-500 text-xs shrink-0 w-20">
                       {log.timestamp.toLocaleTimeString()}
                     </span>
-                    <Badge
-                      className={`${getLevelColor(log.level)} text-white text-xs shrink-0`}
-                    >
+                    <Badge className={`${getLevelColor(log.level)} text-white text-xs shrink-0`}>
                       {log.level.toUpperCase()}
                     </Badge>
                     <div className={`${getLevelTextColor(log.level)} break-words flex-1`}>
                       {log.message.startsWith('📱 WhatsApp QR Code') ? (
-                        <div className="text-green-300 font-semibold text-lg mb-2">
-                          {log.message}
-                        </div>
+                        <div className="text-green-300 font-semibold text-lg mb-2">{log.message}</div>
                       ) : log.message.startsWith('QR_CODE_IMAGE:') ? (
                         <div className="mt-2 mb-2">
                           <div className="p-4 bg-white rounded-lg border-2 border-green-500 inline-block">
-                            <img 
-                              src={log.message.replace('QR_CODE_IMAGE:', '')} 
-                              alt="WhatsApp QR Code" 
+                            <img
+                              src={log.message.replace('QR_CODE_IMAGE:', '')}
+                              alt="WhatsApp QR Code"
                               className="w-64 h-64 mx-auto"
                               onLoad={() => console.log('QR Code image loaded successfully')}
                               onError={(e) => console.log('QR Code image failed to load:', e)}
@@ -238,9 +219,9 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
                         <div>
                           <span className="text-green-300 font-semibold">WhatsApp QR Code (Image Backup):</span>
                           <div className="mt-2 p-3 bg-white rounded-lg border-2 border-green-500">
-                            <img 
-                              src={log.message.replace('QR_CODE_DATA:', '')} 
-                              alt="WhatsApp QR Code" 
+                            <img
+                              src={log.message.replace('QR_CODE_DATA:', '')}
+                              alt="WhatsApp QR Code"
                               className="w-56 h-56 mx-auto"
                               onLoad={() => console.log('QR Code image loaded successfully')}
                               onError={(e) => console.log('QR Code image failed to load:', e)}
@@ -258,19 +239,13 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
             )}
           </div>
         </div>
-        
+
         <div className="mt-4 text-sm text-white">
           <p>Total logs: {logs.length}</p>
           <div className="flex gap-4 mt-2">
-            <span className="text-blue-300">
-              Info: {logs.filter(l => l.level === 'info').length}
-            </span>
-            <span className="text-yellow-300">
-              Warnings: {logs.filter(l => l.level === 'warn').length}
-            </span>
-            <span className="text-red-300">
-              Errors: {logs.filter(l => l.level === 'error').length}
-            </span>
+            <span className="text-blue-300">Info: {logs.filter(l => l.level === 'info').length}</span>
+            <span className="text-yellow-300">Warnings: {logs.filter(l => l.level === 'warn').length}</span>
+            <span className="text-red-300">Errors: {logs.filter(l => l.level === 'error').length}</span>
           </div>
         </div>
       </CardContent>
