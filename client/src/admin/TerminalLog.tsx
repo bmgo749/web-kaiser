@@ -23,15 +23,17 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
       window.location.hostname === 'localhost'
         ? 'http://localhost:5000'
         : 'https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev';
-
-    fetch(`${baseUrl}/api/whatsapp/logs`)
+    
+      fetch(`${baseUrl}/api/whatsapp/logs`)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data.logs)) {
-          setLogs(data.logs.map((log: any) => ({
-            ...log,
-            timestamp: log.timestamp ? new Date(log.timestamp) : new Date(),
-          })));
+          setLogs(
+            data.logs.map((log: any) => ({
+              ...log,
+              timestamp: log.timestamp ? new Date(log.timestamp) : new Date(),
+            }))
+          );
         } else {
           console.warn('⚠️ logs is not an array:', data.logs);
         }
@@ -40,32 +42,24 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
         console.error('Failed to fetch logs:', error);
       });
 
-    setIsConnected(socket.connected); // ✅ inisialisasi langsung
-
-    const handleConnect = () => {
-      console.log('[Socket] Connected');
+    if (socket.connected) {
       setIsConnected(true);
-    };
-    const handleDisconnect = () => {
-      console.log('[Socket] Disconnected');
-      setIsConnected(false);
-    };
+    }
+
     const handleTerminalLog = (log: any) => {
       setLogs(prevLogs => [
         ...prevLogs,
         {
           ...log,
-          timestamp: new Date(log.timestamp),
+          timestamp: log.timestamp ? new Date(log.timestamp) : new Date(),
         },
       ]);
     };
 
-    socket.on('connect', handleConnect);
-    socket.on('disconnect', handleDisconnect);
     socket.on('terminalLog', handleTerminalLog);
 
     return () => {
-      socket.off('terminalLog', handleTerminalLog); // hanya off terminalLog
+      socket.off('terminalLog', handleTerminalLog);
     };
   }, []);
 
