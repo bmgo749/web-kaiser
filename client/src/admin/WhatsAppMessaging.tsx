@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, Button, Input, Textarea, Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Badge } from './ui-components';
 import { Send, MessageCircle, Clock, Check, CheckCheck, Plus, Trash2, QrCode, Smartphone, Users, Loader2 } from 'lucide-react';
 import { io, Socket } from 'socket.io-client';
-import socket from '../socket';
-import axios from 'axios';
 import { useGlobalTemplates } from '../hooks/useGlobalTemplates';
 
 interface MessageTemplate {
@@ -56,8 +54,6 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
 
   // Debug effect to track template persistence
   useEffect(() => {
-    socket.on('connect', handleConnect);
-    socket.on('disconnect', handleDisconnect);
     console.log(`Templates in global store: ${messageTemplates.length}`);
     const storedData = localStorage.getItem('global-templates-storage');
     if (storedData) {
@@ -120,11 +116,7 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
 
   // Initialize templates and socket connection - ONCE ONLY
   useEffect(() => {
-    setIsConnected(socket.connected);
-
-    const handleConnect = () => setIsConnected(true);
-    const handleDisconnect = () => setIsConnected(false);
-    
+    // Only load templates if global storage is completely empty
     if (messageTemplates.length === 0) {
       console.log('Loading templates ONCE from server...');
       loadTemplates(true);
@@ -231,26 +223,18 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
     // Log current template status on initialization
     console.log(`Template permanent storage status: ${messageTemplates.length} templates`);
     if (messageTemplates.length > 0) {
-      addAdminLog('Template Permanent', `✓ ${messageTemplates.length} template(s) PERMANEN tersedia untuk admin: ${username}`);
+      addAdminLog('Template Permanent', `âœ“ ${messageTemplates.length} template(s) PERMANEN tersedia untuk admin: ${username}`);
     } else {
       addAdminLog('Template Permanent', `Admin ${username} terhubung - template yang dibuat akan PERMANEN untuk SEMUA admin`);
     }
 
     return () => {
-      socket.off('connect', handleConnect);
-      socket.off('disconnect', handleDisconnect);
+      // Cleanup socket only - no intervals for permanent storage
       if (socketRef.current) {
         socketRef.current.disconnect();
       }
     };
   }, [addAdminLog]);
-
-  const startConnection = () => {
-    if (!socket.connected) {
-      socket.connect();
-      addAdminLog('WhatsApp Socket', 'Manual connection started');
-    }
-  };
 
   const generateQRCode = async () => {
     setIsGeneratingQR(true);
@@ -366,7 +350,7 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
         setNewTemplateContent('');
         setShowTemplateDialog(false);
         
-        addAdminLog('Template Success', `✓ Template "${templateName}" berhasil disimpan permanen oleh ${username}`);
+        addAdminLog('Template Success', `âœ“ Template "${templateName}" berhasil disimpan permanen oleh ${username}`);
         addAdminLog('Template Permanent', `Template tersedia selamanya untuk semua admin`);
         
         // Broadcast template update to all connected admins
