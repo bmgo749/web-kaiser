@@ -40,8 +40,16 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
         console.error('Failed to fetch logs:', error);
       });
 
-    const handleConnect = () => setIsConnected(true);
-    const handleDisconnect = () => setIsConnected(false);
+    setIsConnected(socket.connected); // ✅ inisialisasi langsung
+
+    const handleConnect = () => {
+      console.log('[Socket] Connected');
+      setIsConnected(true);
+    };
+    const handleDisconnect = () => {
+      console.log('[Socket] Disconnected');
+      setIsConnected(false);
+    };
     const handleTerminalLog = (log: any) => {
       setLogs(prevLogs => [
         ...prevLogs,
@@ -57,9 +65,7 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
     socket.on('terminalLog', handleTerminalLog);
 
     return () => {
-      socket.off('connect', handleConnect);
-      socket.off('disconnect', handleDisconnect);
-      socket.off('terminalLog', handleTerminalLog);
+      socket.off('terminalLog', handleTerminalLog); // hanya off terminalLog
     };
   }, []);
 
