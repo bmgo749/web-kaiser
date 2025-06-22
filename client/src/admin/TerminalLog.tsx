@@ -57,8 +57,6 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
     };
 
     socket.on('terminalLog', handleTerminalLog);
-    socket.on('connect', () => console.log('[SOCKET] Connected'));
-    socket.on('disconnect', () => console.log('[SOCKET] Disconnected'));
 
     return () => {
       socket.off('terminalLog', handleTerminalLog);
