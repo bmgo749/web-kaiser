@@ -150,9 +150,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Connection status is now managed only through socket events
 
   app.get('/api/whatsapp/logs', (req, res) => {
-    res.json({ logs: terminalLogs });
+    res.json({ logs: terminalLogs || [] }); // <- pastikan selalu array
   });
-
+  
   app.post('/api/whatsapp/clear-logs', (req, res) => {
     terminalLogs.length = 0; // Clear the logs array
     addLog('Terminal logs cleared by admin user', 'info');
