@@ -186,56 +186,61 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
               </div>
             ) : (
               <div className="space-y-1">
-                {logs.map((log, index) => (
-                  <div key={index} className="flex items-start gap-2 py-1">
-                    <span className="text-gray-500 text-xs shrink-0 w-20">
-                      {log.timestamp.toLocaleTimeString()}
-                    </span>
-                    <Badge className={`${getLevelColor(log.level)} text-white text-xs shrink-0`}>
-                      {(log.level ?? 'info').toUpperCase()}
-                    </Badge>
-                    <div className={`${getLevelTextColor(log.level)} break-words flex-1`}>
-                      {log.message.startsWith('📱 WhatsApp QR Code') ? (
-                        <div className="text-green-300 font-semibold text-lg mb-2">{log.message}</div>
-                      ) : log.message.startsWith('QR_CODE_IMAGE:') ? (
-                        <div className="mt-2 mb-2">
-                          <div className="p-4 bg-white rounded-lg border-2 border-green-500 inline-block">
-                            <img
-                              src={log.message.replace('QR_CODE_IMAGE:', '')}
-                              alt="WhatsApp QR Code"
-                              className="w-64 h-64 mx-auto"
-                              onLoad={() => console.log('QR Code image loaded successfully')}
-                              onError={(e) => console.log('QR Code image failed to load:', e)}
-                            />
+                {logs.map((log, index) => {
+                  const message = typeof log.message === 'string' ? log.message : '';
+                  return (
+                    <div key={index} className="flex items-start gap-2 py-1">
+                      <span className="text-gray-500 text-xs shrink-0 w-20">
+                        {log.timestamp?.toLocaleTimeString?.() ?? ''}
+                      </span>
+                      <Badge className={`${getLevelColor(log.level)} text-white text-xs shrink-0`}>
+                        {(log.level ?? 'info').toUpperCase()}
+                      </Badge>
+                      <div className={`${getLevelTextColor(log.level)} break-words flex-1`}>
+                        {message.startsWith('📱 WhatsApp QR Code') ? (
+                          <div className="text-green-300 font-semibold text-lg mb-2">{message}</div>
+                        ) : message.startsWith('QR_CODE_IMAGE:') ? (
+                          <div className="mt-2 mb-2">
+                            <div className="p-4 bg-white rounded-lg border-2 border-green-500 inline-block">
+                              <img
+                                src={message.replace('QR_CODE_IMAGE:', '')}
+                                alt="WhatsApp QR Code"
+                                className="w-64 h-64 mx-auto"
+                                onLoad={() => console.log('QR Code image loaded successfully')}
+                                onError={(e) => console.log('QR Code image failed to load:', e)}
+                              />
+                            </div>
                           </div>
-                        </div>
-                      ) : log.message.startsWith('📱 Buka WhatsApp') ? (
-                        <div className="text-blue-300 font-semibold text-center mt-2 p-2 bg-blue-900 rounded">
-                          {log.message}
-                        </div>
-                      ) : log.message.startsWith('🔗 QR Data:') ? (
-                        <div className="text-green-200 text-xs break-all bg-green-900 p-2 rounded mt-1">
-                          {log.message}
-                        </div>
-                      ) : log.message.startsWith('QR_CODE_DATA:') ? (
-                        <div>
-                          <span className="text-green-300 font-semibold">WhatsApp QR Code (Image Backup):</span>
-                          <div className="mt-2 p-3 bg-white rounded-lg border-2 border-green-500">
-                            <img
-                              src={log.message.replace('QR_CODE_DATA:', '')}
-                              alt="WhatsApp QR Code"
-                              className="w-56 h-56 mx-auto"
-                              onLoad={() => console.log('QR Code image loaded successfully')}
-                              onError={(e) => console.log('QR Code image failed to load:', e)}
-                            />
+                        ) : message.startsWith('📱 Buka WhatsApp') ? (
+                          <div className="text-blue-300 font-semibold text-center mt-2 p-2 bg-blue-900 rounded">
+                            {message}
                           </div>
-                        </div>
-                      ) : (
-                        <span>{log.message}</span>
-                      )}
+                        ) : message.startsWith('🔗 QR Data:') ? (
+                          <div className="text-green-200 text-xs break-all bg-green-900 p-2 rounded mt-1">
+                            {message}
+                          </div>
+                        ) : message.startsWith('QR_CODE_DATA:') ? (
+                          <div>
+                            <span className="text-green-300 font-semibold">
+                              WhatsApp QR Code (Image Backup):
+                            </span>
+                            <div className="mt-2 p-3 bg-white rounded-lg border-2 border-green-500">
+                              <img
+                                src={message.replace('QR_CODE_DATA:', '')}
+                                alt="WhatsApp QR Code"
+                                className="w-56 h-56 mx-auto"
+                                onLoad={() => console.log('QR Code image loaded successfully')}
+                                onError={(e) => console.log('QR Code image failed to load:', e)}
+                              />
+                            </div>
+                          </div>
+                        ) : (
+                          <span>{message}</span>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
                 <div ref={logsEndRef} />
               </div>
             )}
