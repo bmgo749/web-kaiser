@@ -22,7 +22,7 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
     const baseUrl =
       window.location.hostname === 'localhost'
         ? 'http://localhost:5000'
-        : 'https://kaiserliche.my.id';
+        : 'https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev/';
 
     fetch(`${baseUrl}/api/whatsapp/logs`)
       .then(res => res.json())
@@ -85,7 +85,7 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
     const baseUrl =
       window.location.hostname === 'localhost'
         ? 'http://localhost:5000'
-        : 'https://kaiserliche.my.id';
+        : 'https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev/';
 
     try {
       const res = await fetch(`${baseUrl}/api/whatsapp/clear-logs`, {
