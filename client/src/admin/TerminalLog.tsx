@@ -51,26 +51,23 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
     });
 
     // Fetch existing logs on component mount
-    fetch('/api/whatsapp/logs')
-      .then(res => res.json())
-      .then(data => {
-        if (data.logs) {
-          setLogs(data.logs.map((log: any) => ({
-            ...log,
-            timestamp: new Date(log.timestamp)
-          })));
-        }
-      })
-      .catch(error => {
-        console.error('Failed to fetch logs:', error);
-      });
+    const baseUrl = window.location.hostname === 'localhost'
+      ? 'http://localhost:5000'
+      : 'https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev/';
 
-    return () => {
-      if (socket) {
-        socket.disconnect();
+    fetch(`${baseUrl}/api/whatsapp/logs`)
+    .then(res => res.json())
+    .then(data => {
+      if (data.logs) {
+       setLogs(data.logs.map((log: any) => ({
+          ...log,
+          timestamp: new Date(log.timestamp)
+       })));
       }
-    };
-  }, [addAdminLog]);
+    })
+    .catch(error => {
+      console.error('Failed to fetch logs:', error);
+    });
 
   // Removed auto-scroll to allow manual scrolling
 
