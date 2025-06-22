@@ -17,24 +17,21 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
   const [logs, setLogs] = useState<TerminalLogEntry[]>([]);
   const [isConnected, setIsConnected] = useState(false);
   const logsEndRef = useRef<HTMLDivElement>(null);
-  const socketRef = useRef<any>(null);
 
   useEffect(() => {
     const baseUrl =
       window.location.hostname === 'localhost'
         ? 'http://localhost:5000'
-        : 'https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev';
+        : 'https://kaiserliche.my.id';
 
     fetch(`${baseUrl}/api/whatsapp/logs`)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data.logs)) {
-          setLogs(
-            data.logs.map((log: any) => ({
-              ...log,
-              timestamp: new Date(log.timestamp),
-            }))
-          );
+          setLogs(data.logs.map((log: any) => ({
+            ...log,
+            timestamp: new Date(log.timestamp),
+          })));
         } else {
           console.warn('⚠️ logs is not an array:', data.logs);
         }
@@ -43,47 +40,44 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
         console.error('Failed to fetch logs:', error);
       });
 
-    socketRef.current = socket;
-
-    socket.on('connect', () => {
-      setIsConnected(true);
-    });
-
-    socket.on('disconnect', () => {
-      setIsConnected(false);
-    });
-
-    socket.on('terminalLog', (log: any) => {
+    const handleConnect = () => setIsConnected(true);
+    const handleDisconnect = () => setIsConnected(false);
+    const handleTerminalLog = (log: any) => {
       setLogs(prevLogs => [
         ...prevLogs,
-        { ...log, timestamp: log.timestamp ? new Data(log.timestamp) : new Date() },
+        {
+          ...log,
+          timestamp: new Date(log.timestamp),
+        },
       ]);
-    });
-  }, [addAdminLog]);
+    };
+
+    socket.on('connect', handleConnect);
+    socket.on('disconnect', handleDisconnect);
+    socket.on('terminalLog', handleTerminalLog);
+
+    return () => {
+      socket.off('connect', handleConnect);
+      socket.off('disconnect', handleDisconnect);
+      socket.off('terminalLog', handleTerminalLog);
+    };
+  }, []);
 
   const getLevelColor = (level: string) => {
     switch (level) {
-      case 'info':
-        return 'bg-blue-600';
-      case 'warn':
-        return 'bg-yellow-600';
-      case 'error':
-        return 'bg-red-600';
-      default:
-        return 'bg-gray-600';
+      case 'info': return 'bg-blue-600';
+      case 'warn': return 'bg-yellow-600';
+      case 'error': return 'bg-red-600';
+      default: return 'bg-gray-600';
     }
   };
 
   const getLevelTextColor = (level: string) => {
     switch (level) {
-      case 'info':
-        return 'text-blue-300';
-      case 'warn':
-        return 'text-yellow-300';
-      case 'error':
-        return 'text-red-300';
-      default:
-        return 'text-gray-300';
+      case 'info': return 'text-blue-300';
+      case 'warn': return 'text-yellow-300';
+      case 'error': return 'text-red-300';
+      default: return 'text-gray-300';
     }
   };
 
@@ -91,7 +85,7 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
     const baseUrl =
       window.location.hostname === 'localhost'
         ? 'http://localhost:5000'
-        : 'https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev';
+        : 'https://kaiserliche.my.id';
 
     try {
       const res = await fetch(`${baseUrl}/api/whatsapp/clear-logs`, {
@@ -114,15 +108,13 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
     }
 
     const csvContent = logs
-      .map(
-        log =>
-          `"${log.timestamp.toISOString()}","${(log.level ?? 'info').toUpperCase()}","${log.message.replaceAll('"', '""')}"`
+      .map(log =>
+        `"${log.timestamp.toISOString()}","${(log.level ?? 'info').toUpperCase()}","${log.message.replaceAll('"', '""')}"`
       )
       .join('\n');
 
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
-
     const a = document.createElement('a');
     a.href = url;
     a.download = `terminal-logs-${new Date().toISOString()}.csv`;
@@ -144,23 +136,11 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
             </Badge>
           </CardTitle>
           <div className="flex gap-2">
-            <Button
-              onClick={exportLogs}
-              variant="outline"
-              size="sm"
-              className="bg-white text-gray-800 hover:bg-gray-100"
-              disabled={logs.length === 0}
-            >
+            <Button onClick={exportLogs} variant="outline" size="sm" className="bg-white text-gray-800 hover:bg-gray-100" disabled={logs.length === 0}>
               <Download className="w-4 h-4 mr-2" />
               Export
             </Button>
-            <Button
-              onClick={clearLogs}
-              variant="outline"
-              size="sm"
-              className="bg-white text-gray-800 hover:bg-gray-100"
-              disabled={logs.length === 0}
-            >
+            <Button onClick={clearLogs} variant="outline" size="sm" className="bg-white text-gray-800 hover:bg-gray-100" disabled={logs.length === 0}>
               <Trash2 className="w-4 h-4 mr-2" />
               Clear
             </Button>
@@ -194,13 +174,7 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
                         ) : message.startsWith('QR_CODE_IMAGE:') ? (
                           <div className="mt-2 mb-2">
                             <div className="p-4 bg-white rounded-lg border-2 border-green-500 inline-block">
-                              <img
-                                src={message.replace('QR_CODE_IMAGE:', '')}
-                                alt="WhatsApp QR Code"
-                                className="w-64 h-64 mx-auto"
-                                onLoad={() => console.log('QR Code image loaded successfully')}
-                                onError={(e) => console.log('QR Code image failed to load:', e)}
-                              />
+                              <img src={message.replace('QR_CODE_IMAGE:', '')} alt="QR" className="w-64 h-64 mx-auto" />
                             </div>
                           </div>
                         ) : message.startsWith('📱 Buka WhatsApp') ? (
@@ -208,22 +182,12 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
                             {message}
                           </div>
                         ) : message.startsWith('🔗 QR Data:') ? (
-                          <div className="text-green-200 text-xs break-all bg-green-900 p-2 rounded mt-1">
-                            {message}
-                          </div>
+                          <div className="text-green-200 text-xs break-all bg-green-900 p-2 rounded mt-1">{message}</div>
                         ) : message.startsWith('QR_CODE_DATA:') ? (
                           <div>
-                            <span className="text-green-300 font-semibold">
-                              WhatsApp QR Code (Image Backup):
-                            </span>
+                            <span className="text-green-300 font-semibold">WhatsApp QR Code (Image Backup):</span>
                             <div className="mt-2 p-3 bg-white rounded-lg border-2 border-green-500">
-                              <img
-                                src={message.replace('QR_CODE_DATA:', '')}
-                                alt="WhatsApp QR Code"
-                                className="w-56 h-56 mx-auto"
-                                onLoad={() => console.log('QR Code image loaded successfully')}
-                                onError={(e) => console.log('QR Code image failed to load:', e)}
-                              />
+                              <img src={message.replace('QR_CODE_DATA:', '')} alt="QR" className="w-56 h-56 mx-auto" />
                             </div>
                           </div>
                         ) : (
