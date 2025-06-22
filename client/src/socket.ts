@@ -15,10 +15,4 @@ const socket: Socket = io(baseUrl, {
   timeout: 50000
 });
 
-// Optional: log
-socket.on('reconnect_attempt', () => console.log('[socket] Reconnecting...'));
-socket.on('reconnect', () => console.log('[socket] Reconnected'));
-socket.on('connect', () => console.log('[socket] Connected'));
-socket.on('disconnect', () => console.log('[socket] Disconnected'));
-
 export default socket;
