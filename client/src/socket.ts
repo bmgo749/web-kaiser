@@ -10,8 +10,8 @@ const socket: Socket = io(baseUrl, {
   withCredentials: true,
   autoConnect: true,
   reconnection: true,
-  reconnectionAttempts: Infinity,
-  reconnectionDelay: 1000,
+  reconnectionAttempts: 9999,
+  reconnectionDelay: 100,
   timeout: 5000
 });
 
