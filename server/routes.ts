@@ -8,7 +8,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   const httpServer = createServer(app);
   const io = new SocketIOServer(httpServer, {
     cors: {
-      origin: ["http://localhost:5000", "https://kaiserliche.my.id", "https://*.replit.dev", "https://*.replit.app"],
+      origin: ["http://localhost:5000", "https://kaiserliche.my.id", "https://*.replit.dev", "https://*.replit.app", "https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev"],
       methods: ["GET", "POST"],
       credentials: true
     },
@@ -150,7 +150,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Connection status is now managed only through socket events
 
   app.get('/api/whatsapp/logs', (req, res) => {
-    res.json({ logs: terminalLogs });
+    res.json({ logs: terminalLog });
   });
 
   app.post('/api/whatsapp/clear-logs', (req, res) => {
