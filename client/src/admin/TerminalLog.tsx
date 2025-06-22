@@ -28,13 +28,15 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
     fetch(`${baseUrl}/api/whatsapp/logs`)
       .then(res => res.json())
       .then(data => {
-        if (data.logs) {
+        if (Array.isArray(data.logs)) {
           setLogs(
             data.logs.map((log: any) => ({
               ...log,
               timestamp: new Date(log.timestamp),
             }))
           );
+        } else {
+          console.warn('⚠️ logs is not an array:', data.logs);
         }
       })
       .catch(error => {
@@ -124,7 +126,7 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
     const csvContent = logs
       .map(
         log =>
-          `"${log.timestamp.toISOString()}","${log.level.toUpperCase()}","${log.message.replaceAll('"', '""')}"`
+          `"${log.timestamp.toISOString()}","${(log.level ?? 'info').toUpperCase()}","${log.message.replaceAll('"', '""')}"`
       )
       .join('\n');
 
@@ -190,7 +192,7 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
                       {log.timestamp.toLocaleTimeString()}
                     </span>
                     <Badge className={`${getLevelColor(log.level)} text-white text-xs shrink-0`}>
-                      {log.level.toUpperCase()}
+                      {(log.level ?? 'info').toUpperCase()}
                     </Badge>
                     <div className={`${getLevelTextColor(log.level)} break-words flex-1`}>
                       {log.message.startsWith('📱 WhatsApp QR Code') ? (
