@@ -2,9 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent, Button, Badge } from './ui-components';
 import { Terminal, Download, Trash2 } from 'lucide-react';
 import { io } from 'socket.io-client';
+import { socket } from '../socket';
 
 interface TerminalLogEntry {
-  timestamp: Date;
+  timestamp: log.timestamp ? new Date(log.timestamp) : new Date();
   message: string;
   level: 'info' | 'warn' | 'error';
 }
@@ -43,10 +44,6 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
         console.error('Failed to fetch logs:', error);
       });
 
-    const socket = io(baseUrl, {
-      transports: ['websocket', 'polling'],
-    });
-
     socketRef.current = socket;
 
     socket.on('connect', () => {
@@ -63,12 +60,6 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
         { ...log, timestamp: new Date(log.timestamp) },
       ]);
     });
-
-    return () => {
-      if (socket) {
-        socket.disconnect();
-      }
-    };
   }, [addAdminLog]);
 
   const getLevelColor = (level: string) => {
@@ -191,7 +182,9 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
                   return (
                     <div key={index} className="flex items-start gap-2 py-1">
                       <span className="text-gray-500 text-xs shrink-0 w-20">
-                        {log.timestamp?.toLocaleTimeString?.() ?? ''}
+                        {log.timestamp instanceof Date && !isNaN(log.timestamp.getTime())
+                          ? log.timestamp.toLocaleTimeString()
+                          : 'Invalid Time'}
                       </span>
                       <Badge className={`${getLevelColor(log.level)} text-white text-xs shrink-0`}>
                         {(log.level ?? 'info').toUpperCase()}
