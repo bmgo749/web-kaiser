@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, Button, Input, Textarea, Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Badge } from './ui-components';
 import { Send, MessageCircle, Clock, Check, CheckCheck, Plus, Trash2, QrCode, Smartphone, Users, Loader2 } from 'lucide-react';
 import { io, Socket } from 'socket.io-client';
+import socket from '../socket';
+import axios from 'axios';
 import { useGlobalTemplates } from '../hooks/useGlobalTemplates';
 
 interface MessageTemplate {
@@ -54,6 +56,8 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
 
   // Debug effect to track template persistence
   useEffect(() => {
+    socket.on('connect', handleConnect);
+    socket.on('disconnect', handleDisconnect);
     console.log(`Templates in global store: ${messageTemplates.length}`);
     const storedData = localStorage.getItem('global-templates-storage');
     if (storedData) {
@@ -116,7 +120,11 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
 
   // Initialize templates and socket connection - ONCE ONLY
   useEffect(() => {
-    // Only load templates if global storage is completely empty
+    setIsConnected(socket.connected);
+
+    const handleConnect = () => setIsConnected(true);
+    const handleDisconnect = () => setIsConnected(false);
+    
     if (messageTemplates.length === 0) {
       console.log('Loading templates ONCE from server...');
       loadTemplates(true);
@@ -229,12 +237,20 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
     }
 
     return () => {
-      // Cleanup socket only - no intervals for permanent storage
+      socket.off('connect', handleConnect);
+      socket.off('disconnect', handleDisconnect);
       if (socketRef.current) {
         socketRef.current.disconnect();
       }
     };
   }, [addAdminLog]);
+
+  const startConnection = () => {
+    if (!socket.connected) {
+      socket.connect();
+      addAdminLog('WhatsApp Socket', 'Manual connection started');
+    }
+  };
 
   const generateQRCode = async () => {
     setIsGeneratingQR(true);
