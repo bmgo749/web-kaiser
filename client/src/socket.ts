@@ -11,7 +11,7 @@ const socket: Socket = io(baseUrl, {
   autoConnect: true,
   reconnection: true,
   reconnectionAttempts: 9999,
-  reconnectionDelay: 100,
+  reconnectionDelay: 0,
   timeout: 5000
 });
 
