@@ -223,7 +223,7 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
     // Log current template status on initialization
     console.log(`Template permanent storage status: ${messageTemplates.length} templates`);
     if (messageTemplates.length > 0) {
-      addAdminLog('Template Permanent', `âœ“ ${messageTemplates.length} template(s) PERMANEN tersedia untuk admin: ${username}`);
+      addAdminLog('Template Permanent', `✓ ${messageTemplates.length} template(s) PERMANEN tersedia untuk admin: ${username}`);
     } else {
       addAdminLog('Template Permanent', `Admin ${username} terhubung - template yang dibuat akan PERMANEN untuk SEMUA admin`);
     }
@@ -350,7 +350,7 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
         setNewTemplateContent('');
         setShowTemplateDialog(false);
         
-        addAdminLog('Template Success', `âœ“ Template "${templateName}" berhasil disimpan permanen oleh ${username}`);
+        addAdminLog('Template Success', `✓ Template "${templateName}" berhasil disimpan permanen oleh ${username}`);
         addAdminLog('Template Permanent', `Template tersedia selamanya untuk semua admin`);
         
         // Broadcast template update to all connected admins
