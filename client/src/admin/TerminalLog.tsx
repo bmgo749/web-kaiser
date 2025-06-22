@@ -46,6 +46,8 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
       setIsConnected(true);
     }
 
+    const handleConnect = () => setIsConnected(true);
+    const handleDisconnect = () => setIsConnected(false);
     const handleTerminalLog = (log: any) => {
       setLogs(prevLogs => [
         ...prevLogs,
@@ -56,12 +58,12 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
       ]);
     };
 
+    socket.on('connect', handleConnect);
+    socket.on('disconnect', handleDisconnect);
     socket.on('terminalLog', handleTerminalLog);
 
     return () => {
       socket.off('terminalLog', handleTerminalLog);
-      socket.off('connect');
-      socket.off('disconnect');
     };
   }, []);
 
