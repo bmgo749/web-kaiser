@@ -75,53 +75,53 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
       return;
     }
     
-if (templatesLoading && !force) {
-  console.log('Template loading already in progress');
-  return;
-}
+    if (templatesLoading && !force) {
+      console.log('Template loading already in progress');
+      return;
+    }
 
-try {
-  setTemplatesLoading(true);
-  console.log('Syncing with server for permanent template storage...');
-  const baseUrl = window.location.hostname === 'localhost'
-    ? 'http://localhost:5000'
-    : 'https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev';
+    try {
+      setTemplatesLoading(true);
+      console.log('Syncing with server for permanent template storage...');
+      const baseUrl = window.location.hostname === 'localhost'
+      ? 'http://localhost:5000'
+      : 'https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev';
 
-  const response = await fetch(`${baseUrl}/api/templates`, {
-    credentials: 'same-origin'
-  });
+      const response = await fetch(`${baseUrl}/api/templates`, {
+      credentials: 'same-origin'
+    });
 
-  if (!response.ok) {
-    throw new Error(`Failed to fetch templates. Status: ${response.status}`);
-  }
+    if (!response.ok) {
+      throw new Error(`Failed to fetch templates. Status: ${response.status}`);
+    }
 
-  const data = await response.json();
+    const data = await response.json();
 
-  if (Array.isArray(data.templates)) {
-    const existingTemplates = messageTemplates;
-    const serverTemplates = data.templates as MessageTemplate[];
+    if (Array.isArray(data.templates)) {
+      const existingTemplates = messageTemplates;
+      const serverTemplates = data.templates as MessageTemplate[];
 
-    const templateMap = new Map<string, MessageTemplate>();
-    existingTemplates.forEach((t: MessageTemplate) => templateMap.set(t.id, t));
-    serverTemplates.forEach((t: MessageTemplate) => templateMap.set(t.id, t));
+      const templateMap = new Map<string, MessageTemplate>();
+      existingTemplates.forEach((t: MessageTemplate) => templateMap.set(t.id, t));
+      serverTemplates.forEach((t: MessageTemplate) => templateMap.set(t.id, t));
 
-    const mergedTemplates = Array.from(templateMap.values());
-    setMessageTemplates(mergedTemplates);
-    markFetched();
+      const mergedTemplates = Array.from(templateMap.values());
+      setMessageTemplates(mergedTemplates);
+      markFetched();
 
-    console.log(`Permanent templates synchronized: ${mergedTemplates.length} templates`);
-    addAdminLog('Template Permanent', `${mergedTemplates.length} template(s) tersimpan PERMANEN - tersedia selamanya untuk semua admin`);
-  } else {
-    throw new Error('Invalid template format from server');
-  }
-} catch (error: any) {
-  console.error('Error syncing templates:', error.message || error);
-  if (messageTemplates.length > 0) {
-    addAdminLog('Template Permanent', `Server offline - menggunakan ${messageTemplates.length} template dari penyimpanan permanen`);
-  }
-} finally {
-  setTemplatesLoading(false);
-}
+      console.log(`Permanent templates synchronized: ${mergedTemplates.length} templates`);
+      addAdminLog('Template Permanent', `${mergedTemplates.length} template(s) tersimpan PERMANEN - tersedia selamanya untuk semua admin`);
+      } else {
+        throw new Error('Invalid template format from server');
+      }
+        } catch (error: any) {
+      console.error('Error syncing templates:', error.message || error);
+        if (messageTemplates.length > 0) {
+          addAdminLog('Template Permanent', `Server offline - menggunakan ${messageTemplates.length} template dari penyimpanan permanen`);
+      }
+    } finally {
+      setTemplatesLoading(false);
+    }
 
   // Initialize templates and socket connection - ONCE ONLY
   useEffect(() => {
@@ -909,5 +909,3 @@ try {
     </div>
   );
 }
-
-export default WhatsAppMessaging;
