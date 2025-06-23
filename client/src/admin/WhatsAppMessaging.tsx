@@ -92,7 +92,7 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch templates. Status: ${response.status}`);
+      console.warn(`⚠️ Template sync failed. Status: ${response.status}`);
     }
 
     const data = await response.json();
@@ -112,7 +112,7 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
       console.log(`Permanent templates synchronized: ${mergedTemplates.length} templates`);
       addAdminLog('Template Permanent', `${mergedTemplates.length} template(s) tersimpan PERMANEN - tersedia selamanya untuk semua admin`);
       } else {
-        throw new Error('Invalid template format from server');
+        console.warn('⚠️ Invalid format received from /api/templates');
       }
         } catch (error: any) {
       console.error('Error syncing templates:', error.message || error);
