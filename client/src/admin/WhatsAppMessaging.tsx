@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, Button, Input, Textarea, Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Badge } from './ui-components';
 import { Send, MessageCircle, Clock, Check, CheckCheck, Plus, Trash2, QrCode, Smartphone, Users, Loader2 } from 'lucide-react';
 import { io, Socket } from 'socket.io-client';
+import socket from '../socket'
 import { useGlobalTemplates } from '../hooks/useGlobalTemplates';
 
 interface MessageTemplate {
@@ -54,6 +55,9 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
 
   // Debug effect to track template persistence
   useEffect(() => {
+    if (!socket.connected) {
+      socket.connect();
+    }
     console.log(`Templates in global store: ${messageTemplates.length}`);
     const storedData = localStorage.getItem('global-templates-storage');
     if (storedData) {
@@ -116,6 +120,9 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
 
   // Initialize templates and socket connection - ONCE ONLY
   useEffect(() => {
+    if (!socket.connected) {
+      socket.connect();
+    }
     // Only load templates if global storage is completely empty
     if (messageTemplates.length === 0) {
       console.log('Loading templates ONCE from server...');
