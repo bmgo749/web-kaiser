@@ -909,3 +909,5 @@ try {
     </div>
   );
 }
+
+export default WhatsAppMessaging;
