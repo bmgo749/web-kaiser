@@ -909,5 +909,3 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
     </div>
   );
 }}
-
-export default WhatsAppMessaging;
