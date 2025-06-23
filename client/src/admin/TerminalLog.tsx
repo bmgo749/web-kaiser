@@ -24,7 +24,7 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
         ? 'http://localhost:5000'
         : 'https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev';
 
-    fetch(`$https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev/api/whatsapp/logs`)
+    fetch(`https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev/api/whatsapp/logs`)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data.logs)) {
