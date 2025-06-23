@@ -557,6 +557,7 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
     }
   };
 
+  console.log('Rendering WhatsAppMessaging...');
   return (
     <div className="space-y-6">
       <style>{`
@@ -565,7 +566,7 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
           scrollbar-width: none;
         }
         .hide-scrollbar::-webkit-scrollbar {
-          display: none;
+          display: block;
         }
       `}</style>
 
