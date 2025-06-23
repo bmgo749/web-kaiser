@@ -42,12 +42,13 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
         console.error('Failed to fetch logs:', error);
       });
 
-    if (socket.connected) {
-      setIsConnected(true);
+    if (!socket.connected) {
+      socket.connect();
     }
 
     const handleConnect = () => setIsConnected(true);
     const handleDisconnect = () => setIsConnected(false);
+    
     const handleTerminalLog = (log: any) => {
       setLogs(prevLogs => [
         ...prevLogs,
@@ -60,10 +61,13 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
 
     socket.on('connect', handleConnect);
     socket.on('disconnect', handleDisconnect);
-    socket.on('terminalLog', handleTerminalLog);
+    
+    if (!socket.listeners('terminalLog').some(fn => fn === handleTerminalLog)) {
+      socket.on('terminalLog', handleTerminalLog);
+    }
 
     return () => {
-      socket.off('terminalLog', handleTerminalLog);
+      
     };
   }, []);
 
