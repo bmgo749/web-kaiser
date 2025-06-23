@@ -23,8 +23,8 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
       window.location.hostname === 'localhost'
         ? 'http://localhost:5000'
         : 'https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev';
-    
-      fetch(`${baseUrl}/api/whatsapp/logs`)
+
+    fetch(`$https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev/api/whatsapp/logs`)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data.logs)) {
@@ -46,9 +46,18 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
       socket.connect();
     }
 
-    const handleConnect = () => setIsConnected(true);
-    const handleDisconnect = () => setIsConnected(false);
-    
+    const handleConnect = () => {
+      console.log('[Socket] Connected');
+      setIsConnected(true);
+
+    socket.on('terminalLog', handleTerminalLog);
+    };
+
+    const handleDisconnect = () => {
+      console.log('[Socket] Disconnected');
+      setIsConnected(false);
+    };
+
     const handleTerminalLog = (log: any) => {
       setLogs(prevLogs => [
         ...prevLogs,
@@ -61,13 +70,9 @@ export default function TerminalLog({ addAdminLog }: TerminalLogProps) {
 
     socket.on('connect', handleConnect);
     socket.on('disconnect', handleDisconnect);
-    
-    if (!socket.listeners('terminalLog').some(fn => fn === handleTerminalLog)) {
-      socket.on('terminalLog', handleTerminalLog);
-    }
 
     return () => {
-      
+      socket.off('terminalLog', handleTerminalLog);
     };
   }, []);
 
