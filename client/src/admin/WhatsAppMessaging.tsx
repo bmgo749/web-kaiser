@@ -40,6 +40,7 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
   const [isSending, setIsSending] = useState(false);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const socketRef = useRef<Socket | null>(null);
+  console.log('Mounted!')
   
   // Use global template store for persistence across menu navigation
   const { 
