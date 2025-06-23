@@ -908,5 +908,5 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
         </CardContent>
       </Card>
     </div>
-  )};
-}
+  );
+}}
