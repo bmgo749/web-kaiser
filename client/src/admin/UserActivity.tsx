@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
 import { Card, CardContent, CardHeader, CardTitle, Badge, Button } from './ui-components';
 import { Eye, EyeOff, RefreshCw } from 'lucide-react';
+import socket from '../socket'
 
 interface UserActivityEntry {
   id: string;
