@@ -908,4 +908,3 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
       </Card>
     </div>
   );
-}
