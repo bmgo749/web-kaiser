@@ -66,7 +66,6 @@ export default function UserActivity({ addAdminLog }: UserActivityProps) {
     
     return () => {
       socket.off('userActivity');
-      }
     };
   }, []); // Remove addAdminLog dependency to prevent infinite loop
 
