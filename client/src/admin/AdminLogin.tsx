@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Input, Label, Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui-components';
 import { Eye, EyeOff } from 'lucide-react';
+import socket from '../socket';
 
 interface AdminLoginProps {
   onLogin: (username: string, password: string) => void;
@@ -14,17 +15,18 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const validCredentials = [
       { username: 'Tupolev', password: 'SS01A1010?N*' },
       { username: 'Aldxx', password: 'AD82A0283!P@&' }
     ];
-    
+
     const isValid = validCredentials.some(
       cred => cred.username === username && cred.password === password
     );
-    
+
     if (isValid) {
+      socket.connect(); // ✅ connect socket after successful login
       onLogin(username, password);
     } else {
       setError('Username atau password salah');
@@ -46,7 +48,7 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
               left: Math.random() * 100 + '%',
               animationDelay: Math.random() * 0.8 + 's',
               animationDuration: '0.8s',
-              transform: `translateX(${Math.random() * 100}px)`,
+              transform: `translateX(${Math.random() * 100}px)`
             }}
           />
         ))}
@@ -59,12 +61,12 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
               height: Math.random() * 1 + 0.5 + 'px',
               top: Math.random() * 100 + '%',
               left: -Math.random() * 200 + 'px',
-              opacity: 0.6,
+              opacity: 0.6
             }}
           />
         ))}
       </div>
-      
+
       <Card className="w-full max-w-md shadow-2xl bg-gray-900 border-gray-700 relative z-10">
         <CardHeader className="text-center space-y-4">
           <div className="flex justify-center">
