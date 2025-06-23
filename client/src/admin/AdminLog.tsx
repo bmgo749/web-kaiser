@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, Button, Badge } from './ui-components';
 import { Activity, Clock, Trash2, Download } from 'lucide-react';
+import socket from '../socket';
 
 interface AdminLogEntry {
   id: string;
@@ -15,6 +16,12 @@ interface AdminLogProps {
 }
 
 export default function AdminLog({ logs, onClearLogs }: AdminLogProps) {
+  useEffect(() => {
+    if (!socket.connected) {
+      socket.connect();
+    }
+  }, []);
+
   const getActionColor = (action: string) => {
     switch (action.toLowerCase()) {
       case 'login':
@@ -126,7 +133,7 @@ export default function AdminLog({ logs, onClearLogs }: AdminLogProps) {
             ))}
           </div>
         )}
-        
+
         {logs.length > 0 && (
           <div className="mt-4 pt-4 border-t border-gray-600">
             <div className="flex justify-between text-sm text-gray-400">
