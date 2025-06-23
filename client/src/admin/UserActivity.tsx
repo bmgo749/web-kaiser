@@ -33,12 +33,11 @@ export default function UserActivity({ addAdminLog }: UserActivityProps) {
   };
 
   useEffect(() => {
-    let socket: any = null;
+    if (!socket.connected) {
+    socket.connect();
+  }
     
     try {
-      // Set up real user activity tracking
-      socket = io('https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev');
-      
       socket.on('userActivity', (activity: any) => {
         const newActivity: UserActivityEntry = {
           id: Date.now().toString(),
@@ -66,8 +65,7 @@ export default function UserActivity({ addAdminLog }: UserActivityProps) {
     }
     
     return () => {
-      if (socket) {
-        socket.disconnect();
+      socket.off('userActivity');
       }
     };
   }, []); // Remove addAdminLog dependency to prevent infinite loop
