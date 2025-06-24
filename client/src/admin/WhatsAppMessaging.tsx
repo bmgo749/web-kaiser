@@ -40,6 +40,7 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
   const [isSending, setIsSending] = useState(false);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const socketRef = useRef<Socket | null>(null);
+  const [hasLoadedTemplates, setHasLoadedTemplates] = useState(false);
   console.log('Mounted!')
   
   // Use global template store for persistence across menu navigation
@@ -134,6 +135,7 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
     if (messageTemplates.length === 0) {
       console.log('Loading templates ONCE from server...');
       loadTemplates(true);
+      setHasLoadedTemplates(true);
     } else {
       console.log('Using existing templates from permanent storage');
     }
@@ -248,7 +250,7 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
         socketRef.current.disconnect();
       }
     };
-  }, [addAdminLog]);
+  }, [addAdminLog], [hasLoadedTemplates);
 
   const generateQRCode = async () => {
     setIsGeneratingQR(true);
@@ -730,16 +732,16 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
           </div>
         </CardHeader>
         <CardContent>
-          {messageTemplates.length === 0 ? (
+          {templatesLoading ? (
             <div className="text-center py-8 text-gray-400">
-              {templatesLoading ? (
-                <div className="flex items-center justify-center gap-2">
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Loading templates...
-                </div>
-              ) : (
-                "Belum ada template. Klik \"Tambah Template\" untuk membuat template baru."
-              )}
+              <div className="flex items-center justify-center gap-2">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                   Loading templates...
+              </div>
+            </div>
+          ) : messageTemplates.length === 0 ? (
+            <div className="text-center py-8 text-gray-400">
+              Belum ada template. Klik "Tambah Template" untuk membuat template baru.
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
