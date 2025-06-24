@@ -9,7 +9,7 @@ const baseUrl =
 const socket = io(baseUrl, {
   transports: ['websocket'],
   withCredentials: true,
-  autoConnect: false, // otomatis konek
+  autoConnect: true, // otomatis konek
   reconnection: true, // reconnect otomatis
   reconnectionAttempts: 99,
   reconnectionDelay: 1000
