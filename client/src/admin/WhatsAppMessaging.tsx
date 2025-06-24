@@ -250,7 +250,7 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
         socketRef.current.disconnect();
       }
     };
-  }, [addAdminLog], [hasLoadedTemplates);
+  }, [addAdminLog], [hasLoadedTemplates]);
 
   const generateQRCode = async () => {
     setIsGeneratingQR(true);
