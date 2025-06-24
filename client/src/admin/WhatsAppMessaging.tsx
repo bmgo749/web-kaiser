@@ -72,9 +72,6 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
   }, []);
   
   useEffect(() => {
-    if (!socket.connected) {
-      socket.connect();
-    }
     console.log(`Templates in global store: ${messageTemplates.length}`);
     const storedData = localStorage.getItem('global-templates-storage');
     if (storedData) {
