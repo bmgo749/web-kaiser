@@ -56,6 +56,10 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
   } = useGlobalTemplates();
 
   useEffect(() => {
+    if (!socket.connected) {
+    socket.connect();
+  }
+    
     const handleTerminalLog = (log: any) => {
       setLogs(prev => [...prev, {
         ...log,
