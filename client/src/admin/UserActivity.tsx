@@ -34,6 +34,22 @@ export default function UserActivity({ addAdminLog }: UserActivityProps) {
   };
 
   useEffect(() => {
+    const handleTerminalLog = (log: any) => {
+      setLogs(prev => [...prev, {
+        ...log,
+        timestamp: log.timestamp ? new Date(log.timestamp) : new Date(),
+      }]);
+    };
+
+    socket.off('terminalLog', handleTerminalLog);
+    socket.on('terminalLog', handleTerminalLog);
+
+    return () => {
+      socket.off('terminalLog', handleTerminalLog); // hanya off, tidak disconnect
+    };
+  }, []);
+
+  useEffect(() => {
     if (!socket.connected) {
     socket.connect();
   }
