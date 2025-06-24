@@ -123,6 +123,7 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
     } finally {
       setTemplatesLoading(false);
     }
+  };
 
   // Initialize templates and socket connection - ONCE ONLY
   useEffect(() => {
@@ -910,4 +911,4 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
       </Card>
     </div>
   );
-}}
+}
