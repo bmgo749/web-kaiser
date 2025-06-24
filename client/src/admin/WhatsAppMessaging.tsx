@@ -55,7 +55,22 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
     markFetched
   } = useGlobalTemplates();
 
-  // Debug effect to track template persistence
+  useEffect(() => {
+    const handleTerminalLog = (log: any) => {
+      setLogs(prev => [...prev, {
+        ...log,
+        timestamp: log.timestamp ? new Date(log.timestamp) : new Date(),
+      }]);
+    };
+
+    socket.off('terminalLog', handleTerminalLog);
+    socket.on('terminalLog', handleTerminalLog);
+
+    return () => {
+      socket.off('terminalLog', handleTerminalLog); // hanya off, tidak disconnect
+    };
+  }, []);
+  
   useEffect(() => {
     if (!socket.connected) {
       socket.connect();
