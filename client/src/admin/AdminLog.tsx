@@ -22,6 +22,22 @@ export default function AdminLog({ logs, onClearLogs }: AdminLogProps) {
     }
   }, []);
 
+  useEffect(() => {
+    const handleTerminalLog = (log: any) => {
+      setLogs(prev => [...prev, {
+        ...log,
+        timestamp: log.timestamp ? new Date(log.timestamp) : new Date(),
+      }]);
+    };
+
+    socket.off('terminalLog', handleTerminalLog);
+    socket.on('terminalLog', handleTerminalLog);
+
+    return () => {
+      socket.off('terminalLog', handleTerminalLog); // hanya off, tidak disconnect
+    };
+  }, []);
+
   const getActionColor = (action: string) => {
     switch (action.toLowerCase()) {
       case 'login':
