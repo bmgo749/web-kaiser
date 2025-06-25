@@ -9,13 +9,13 @@ import { useIntro } from "./hooks/useIntro";
 import { useEffect, useState } from "react";
 import "@fontsource/inter";
 
-export default function CaptchaGate({ onPassed }: { onPassed: () => void }) {
+function CaptchaGate({ onPassed }: { onPassed: () => void }) {
   const [verified, setVerified] = useState(false);
 
   useEffect(() => {
     if (window.turnstile) {
       window.turnstile.render('#cf-turnstile', {
-        sitekey: 'YOUR_SITE_KEY',
+        sitekey: '0x4AAAAAABiGO8kRAt_pShN0',
         callback: (token: string) => {
           setVerified(true);
           onPassed();
