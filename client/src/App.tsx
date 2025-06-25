@@ -13,7 +13,9 @@ function CaptchaGate({ onPassed }: { onPassed: () => void }) {
   const [verified, setVerified] = useState(false);
 
   useEffect(() => {
+  const interval = setInterval(() => {
     if (window.turnstile) {
+      console.log("✅ Cloudflare Turnstile loaded");
       window.turnstile.render('#cf-turnstile', {
         sitekey: '0x4AAAAAABiGO8kRAt_pShN0',
         callback: (token: string) => {
@@ -21,8 +23,11 @@ function CaptchaGate({ onPassed }: { onPassed: () => void }) {
           onPassed();
         },
       });
+      clearInterval(interval);
     }
-  }, []);
+  }, 300);
+  return () => clearInterval(interval);
+}, []);
 
   if (!verified) {
     return (
