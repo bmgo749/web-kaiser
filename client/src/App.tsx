@@ -29,7 +29,7 @@ function CaptchaGate({ onPassed }: { onPassed: () => void }) {
       <div className="min-h-screen flex items-center justify-center bg-black text-white">
         <div>
           <h1 className="mb-4 text-lg font-bold">Verifikasi terlebih dahulu</h1>
-          <div id="cf-turnstile" />
+          <div class="cf-turnstile" />
         </div>
       </div>
     );
