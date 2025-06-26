@@ -14,14 +14,10 @@ function CaptchaGate({ onPassed }: { onPassed: () => void }) {
   const [verified, setVerified] = useState(false);
 
   useEffect(() => {
-  // Ambil CSRF token dari backend
-  axios.get('/csrf-token', { credentials: 'include' })
+  axios.get('/csrf-token', { withCredentials: true }) // ini sudah benar
     .then(res => {
-      if (!res.ok) throw new Error(`CSRF token fetch failed: ${res.status}`);
-      return res.json();
-    })
-    .then(data => {
-      console.log("🛡️ CSRF Token received:", data.csrfToken);
+      const token = res.data.csrfToken; // Ambil dari JSON
+      console.log("🛡️ CSRF Token received:", token);
       axios.defaults.headers.common['CSRF-Token'] = token;
     })
     .catch(err => {
