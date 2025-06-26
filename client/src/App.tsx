@@ -16,7 +16,7 @@ function CaptchaGate({ onPassed }: { onPassed: () => void }) {
   const [verified, setVerified] = useState(false);
 
   useEffect(() => {
-  axios.get('/csrf-token', { withCredentials: true }) // ini sudah benar
+  axios.get('https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev/csrf-token', { withCredentials: true }) // ini sudah benar
     .then(res => {
       const token = res.data.csrfToken; // Ambil dari JSON
       console.log("🛡️ CSRF Token received:", token);
