@@ -7,15 +7,32 @@ import IntroSequence from "./components/IntroSequence";
 import { useSolarSystem } from "./hooks/useSolarSystem";
 import { useIntro } from "./hooks/useIntro";
 import { useEffect, useState } from "react";
+import axios from 'axios';
 import "@fontsource/inter";
 
 function CaptchaGate({ onPassed }: { onPassed: () => void }) {
   const [verified, setVerified] = useState(false);
 
   useEffect(() => {
+  // Ambil CSRF token dari backend
+  fetch('/csrf-token', { credentials: 'include' })
+    .then(res => {
+      if (!res.ok) throw new Error(`CSRF token fetch failed: ${res.status}`);
+      return res.json();
+    })
+    .then(data => {
+      console.log("🛡️ CSRF Token received:", data.csrfToken);
+      axios.defaults.headers.common['CSRF-Token'] = token;
+    })
+    .catch(err => {
+      console.error("❌ Failed to fetch CSRF token:", err);
+    });
+
+  // Coba render Turnstile secara berkala hingga siap
   const interval = setInterval(() => {
-    if (window.turnstile) {
+    if (window.turnstile && document.getElementById('cf-turnstile')) {
       console.log("✅ Cloudflare Turnstile loaded");
+
       window.turnstile.render('#cf-turnstile', {
         sitekey: '0x4AAAAAABiGO8kRAt_pShN0',
         callback: (token: string) => {
@@ -23,10 +40,12 @@ function CaptchaGate({ onPassed }: { onPassed: () => void }) {
           onPassed();
         },
       });
-      clearInterval(interval);
+
+      clearInterval(interval); // hentikan polling
     }
   }, 300);
-  return () => clearInterval(interval);
+
+  return () => clearInterval(interval); // bersihkan interval saat unmount
 }, []);
 
   if (!verified) {
