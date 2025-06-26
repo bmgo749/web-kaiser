@@ -11,6 +11,8 @@ import axios from 'axios';
 import protection from '/src/protection'
 import "@fontsource/inter";
 
+app.use(protection);
+
 function CaptchaGate({ onPassed }: { onPassed: () => void }) {
   const [verified, setVerified] = useState(false);
 
