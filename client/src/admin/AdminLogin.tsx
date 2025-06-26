@@ -1,7 +1,15 @@
-import React, { useState } from 'react';
-import { Button, Input, Label, Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui-components';
+import React, { useEffect, useState } from 'react';
+import {
+  Button, Input, Label, Card, CardContent, CardDescription, CardHeader, CardTitle
+} from './ui-components';
 import { Eye, EyeOff } from 'lucide-react';
 import socket from '../socket';
+
+declare global {
+  interface Window {
+    turnstile: any;
+  }
+}
 
 interface AdminLoginProps {
   onLogin: (username: string, password: string) => void;
@@ -12,9 +20,31 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [captchaPassed, setCaptchaPassed] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const container = document.getElementById('cf-turnstile');
+      if (window.turnstile && container) {
+        window.turnstile.render(container, {
+          sitekey: '0x4AAAAAABiGO8kRAt_pShN0',
+          callback: function () {
+            setCaptchaPassed(true);
+          },
+        });
+        clearInterval(interval);
+      }
+    }, 300);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!captchaPassed) {
+      setError('Harap selesaikan verifikasi captcha terlebih dahulu');
+      return;
+    }
 
     const validCredentials = [
       { username: 'Tupolev', password: 'SS01A1010?N*' },
@@ -26,7 +56,7 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
     );
 
     if (isValid) {
-      socket.connect(); // ✅ connect socket after successful login
+      socket.connect();
       onLogin(username, password);
     } else {
       setError('Username atau password salah');
@@ -35,7 +65,7 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
 
   return (
     <div className="min-h-screen bg-black relative flex items-center justify-center p-4 overflow-hidden">
-      {/* Animated Stars Background */}
+      {/* Background Bintang */}
       <div className="absolute inset-0">
         {[...Array(200)].map((_, i) => (
           <div
@@ -120,6 +150,10 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
                 </Button>
               </div>
             </div>
+
+            {/* CAPTCHA */}
+            <div id="cf-turnstile" className="flex justify-center pt-2" />
+
             {error && (
               <div className="text-red-400 text-sm text-center">{error}</div>
             )}
