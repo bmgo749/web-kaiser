@@ -8,6 +8,7 @@ import { useSolarSystem } from "./hooks/useSolarSystem";
 import { useIntro } from "./hooks/useIntro";
 import { useEffect, useState } from "react";
 import axios from 'axios';
+import protection from '/src/protection'
 import "@fontsource/inter";
 
 function CaptchaGate({ onPassed }: { onPassed: () => void }) {
