@@ -8,7 +8,6 @@ import { useSolarSystem } from "./hooks/useSolarSystem";
 import { useIntro } from "./hooks/useIntro";
 import { useEffect, useState } from "react";
 import axios from 'axios';
-import express from 'express';
 import "@fontsource/inter";
 const app = express();
 
