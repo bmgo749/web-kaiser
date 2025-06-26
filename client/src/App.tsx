@@ -15,7 +15,7 @@ function CaptchaGate({ onPassed }: { onPassed: () => void }) {
 
   useEffect(() => {
   // Ambil CSRF token dari backend
-  fetch('/csrf-token', { credentials: 'include' })
+  axios.get('/csrf-token', { credentials: 'include' })
     .then(res => {
       if (!res.ok) throw new Error(`CSRF token fetch failed: ${res.status}`);
       return res.json();
