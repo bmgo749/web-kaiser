@@ -9,11 +9,8 @@ import { useIntro } from "./hooks/useIntro";
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import express from 'express';
-import { setupSecurityMiddleware } from './protection'
 import "@fontsource/inter";
 const app = express();
-
-setupSecurityMiddleware(app);
 
 function CaptchaGate({ onPassed }: { onPassed: () => void }) {
   const [verified, setVerified] = useState(false);
