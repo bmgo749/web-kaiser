@@ -2,9 +2,12 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { Server as SocketIOServer } from "socket.io";
 import { storage } from "./storage";
+import axios from 'axios';
 import WhatsAppService from "./whatsapp-service";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  const csrf = require("csurf");
+  const csrfProtection = csrf({ cookie: true });
   const httpServer = createServer(app);
   const io = new SocketIOServer(httpServer, {
     cors: {
@@ -29,7 +32,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   };
 
   // WhatsApp API routes
-  app.post('/api/whatsapp/generate-qr', async (req, res) => {
+  app.post('/api/whatsapp/generate-qr', csrfProtection, async (req, res) => {
     try {
       // Safe disconnect any existing service
       if (whatsappService) {
@@ -114,7 +117,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post('/api/whatsapp/send-message', async (req, res) => {
+  app.post('/api/whatsapp/send-message', csrfProtection, async (req, res) => {
     const { groupId, message } = req.body;
 
     if (!whatsappService || !whatsappService.getConnectionStatus()) {
@@ -149,7 +152,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Status endpoint removed to prevent excessive polling that causes connection issues
   // Connection status is now managed only through socket events
 
-  app.get('/api/whatsapp/logs', (req, res) => {
+  app.get('/api/whatsapp/logs', csrfProtection, (req, res) => {
     res.json({ logs: terminalLogs || [] }); // <- pastikan selalu array
   });
   
@@ -159,7 +162,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json({ success: true, message: 'Logs cleared successfully' });
   });
 
-  app.post('/api/whatsapp/disconnect', (req, res) => {
+  app.post('/api/whatsapp/disconnect', csrfProtection, (req, res) => {
     try {
       if (whatsappService) {
         whatsappService.disconnect();
@@ -174,7 +177,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post('/api/whatsapp/reset', async (req, res) => {
+  app.post('/api/whatsapp/reset', csrfProtection, async (req, res) => {
     try {
       if (whatsappService) {
         whatsappService.resetConnection();
@@ -188,7 +191,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // User activity tracking endpoint
-  app.post('/api/user-activity', (req, res) => {
+  app.post('/api/user-activity', csrfProtection, (req, res) => {
     const { activity, userAgent } = req.body;
     
     // Extract basic info from user agent
@@ -211,7 +214,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Template management endpoints
-  app.get('/api/templates', async (req, res) => {
+  app.get('/api/templates', csrfProtection, async (req, res) => {
     try {
       const templates = await storage.getTemplates();
       res.json({ success: true, templates });
@@ -220,7 +223,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post('/api/templates', async (req, res) => {
+  app.post('/api/templates', csrfProtection, async (req, res) => {
     try {
       console.log('Template creation request received:', req.body);
       console.log('Request headers:', req.headers);
@@ -266,7 +269,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete('/api/templates/:id', async (req, res) => {
+  app.delete('/api/templates/:id', csrfProtection, async (req, res) => {
     try {
       const { id } = req.params;
       const deleted = await storage.deleteTemplate(id);
