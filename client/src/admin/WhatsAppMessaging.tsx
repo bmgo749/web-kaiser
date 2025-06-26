@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle, Button, Input, Textarea, Labe
 import { Send, MessageCircle, Clock, Check, CheckCheck, Plus, Trash2, QrCode, Smartphone, Users, Loader2 } from 'lucide-react';
 import { io, Socket } from 'socket.io-client';
 import socket from '../socket'
+import axios from 'axios';
 import { useGlobalTemplates } from '../hooks/useGlobalTemplates';
 
 interface MessageTemplate {
