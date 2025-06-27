@@ -17,29 +17,22 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
   const [captchaPassed, setCaptchaPassed] = useState(false);
 
   useEffect(() => {
-  const renderCaptcha = () => {
-    const container = document.querySelector('.cf-turnstile');
-    if (window.turnstile && container) {
-      console.log("✅ Turnstile ready, rendering...");
-      window.turnstile.render(container, {
-        sitekey: '0x4AAAAAABiGO8kRAt_pShN0',
-        theme: 'dark',
-        callback: function () {
-          console.log("✅ CAPTCHA verified");
-          setCaptchaPassed(true);
-        }
-      });
-    }
-  };
+  if (window.turnstile && document.getElementById('cf-turnstile')) {
+      console.log("✅ Cloudflare Turnstile loaded");
 
-  const interval = setInterval(() => {
-    if (window.turnstile) {
-      renderCaptcha();
-      clearInterval(interval);
+      window.turnstile.render('#cf-turnstile', {
+        sitekey: '0x4AAAAAABiGO8kRAt_pShN0',
+        callback: (token: string) => {
+          setVerified(true);
+          onPassed();
+        },
+      });
+
+      clearInterval(interval); // hentikan polling
     }
   }, 300);
 
-  return () => clearInterval(interval);
+  return () => clearInterval(interval); // bersihkan interval saat unmount
 }, []);
   
   const handleSubmit = (e: React.FormEvent) => {
@@ -156,9 +149,7 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
             </div>
 
             {/* CAPTCHA */}
-            <div className="flex justify-center pt-2">
-              <div className="cf-turnstile"></div>
-            </div>
+            <div id="cf-turnstile"></div>
             
             {error && (
               <div className="text-red-400 text-sm text-center">{error}</div>
