@@ -152,4 +152,4 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
       </Card>
     </div>
   );
-}
+})
