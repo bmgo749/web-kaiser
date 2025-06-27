@@ -154,17 +154,23 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
       ? 'http://localhost:5000'
       : 'https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev';
 
+    useEffect(() => {
     fetch(`${baseUrl}/csrf-token`, {
-      credentials: 'include'
+      credentials: 'include',
+      method: 'GET
     })
-      .then(res => res.json())
-      .then(data => {
-        console.log("✅ CSRF token fetched:", data.csrfToken);
-        localStorage.setItem("csrfToken", data.csrfToken); // contoh penyimpanan
+      .then(res => {
+        if (!res.ok) throw new Error('CSRF fetch failed');
+        return res.json();
+      })
+        .then(data => {
+        axios.defaults.headers.common['CSRF-Token'] = data.csrfToken;
       })
       .catch(err => {
-        console.error("❌ Gagal mengambil CSRF token:", err);
+        console.error("❌ Gagal mengambil CSRF token:", err.message);
       });
+  }, []);
+
     
     // Only load templates if global storage is completely empty
     if (messageTemplates.length === 0) {
