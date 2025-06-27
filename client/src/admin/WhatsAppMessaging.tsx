@@ -157,7 +157,7 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
     useEffect(() => {
     fetch(`${baseUrl}/csrf-token`, {
       credentials: 'include',
-      method: 'GET
+      method: 'GET'
     })
       .then(res => {
         if (!res.ok) throw new Error('CSRF fetch failed');
