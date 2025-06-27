@@ -148,6 +148,24 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
     if (!socket.connected) {
       socket.connect();
     }
+
+    const baseUrl =
+    window.location.hostname === 'localhost'
+      ? 'http://localhost:5000'
+      : 'https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev';
+
+    fetch(`${baseUrl}/csrf-token`, {
+      credentials: 'include'
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log("✅ CSRF token fetched:", data.csrfToken);
+        localStorage.setItem("csrfToken", data.csrfToken); // contoh penyimpanan
+      })
+      .catch(err => {
+        console.error("❌ Gagal mengambil CSRF token:", err);
+      });
+    
     // Only load templates if global storage is completely empty
     if (messageTemplates.length === 0) {
       console.log('Loading templates ONCE from server...');
@@ -282,6 +300,7 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'CSRF-Token': localStorage.getItem('csrfToken') || ''
         },
         credentials: 'same-origin'
       });
@@ -310,6 +329,7 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'CSRF-Token': localStorage.getItem('csrfToken') || ''
         },
         credentials: 'same-origin'
       });
@@ -355,6 +375,7 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'CSRF-Token': localStorage.getItem('csrfToken') || ''
         },
         credentials: 'include',
         body: JSON.stringify({
@@ -423,7 +444,10 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
         : 'https://c4cec392-80cf-4135-8816-be8dcce10e0a-00-184ek4rfyt86y.sisko.replit.dev';
       const response = await fetch(`${baseUrl}/api/templates/${templateId}`, {
         method: 'DELETE',
-        credentials: 'same-origin'
+        headers: {
+          'CSRF-Token': localStorage.getItem('csrfToken') || ''
+        },
+        credentials: 'include'
       });
       
       const data = await response.json();
@@ -494,6 +518,7 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'CSRF-Token': localStorage.getItem('csrfToken') || ''
         },
         body: JSON.stringify({
           groupId: groupId,
