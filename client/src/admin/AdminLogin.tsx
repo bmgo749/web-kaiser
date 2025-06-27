@@ -17,6 +17,8 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
   const [captchaPassed, setCaptchaPassed] = useState(false);
 
   useEffect(() => {
+    )
+  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
