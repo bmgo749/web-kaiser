@@ -5,12 +5,6 @@ import {
 import { Eye, EyeOff } from 'lucide-react';
 import socket from '../socket';
 
-declare global {
-  interface Window {
-    turnstile: any;
-  }
-}
-
 interface AdminLoginProps {
   onLogin: (username: string, password: string) => void;
 }
@@ -23,21 +17,16 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
   const [captchaPassed, setCaptchaPassed] = useState(false);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      const container = document.getElementById('cf-turnstile');
-      if (window.turnstile && container) {
-        window.turnstile.render(container, {
-          sitekey: '0x4AAAAAABiGO8kRAt_pShN0',
-          callback: function () {
-            setCaptchaPassed(true);
-          },
-        });
-        clearInterval(interval);
-      }
-    }, 300);
-    return () => clearInterval(interval);
-  }, []);
-
+  const checkReady = setInterval(() => {
+    const iframe = document.querySelector('iframe[src*="challenges.cloudflare.com"]');
+    if (iframe) {
+      console.log("✅ Turnstile rendered!");
+      clearInterval(checkReady);
+    }
+  }, 500);
+  return () => clearInterval(checkReady);
+}, []);
+  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -152,8 +141,13 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
             </div>
 
             {/* CAPTCHA */}
-            <div id="cf-turnstile" className="flex justify-center pt-2" />
-
+            <div
+              className="cf-turnstile flex justify-center pt-2"
+              data-sitekey="0x4AAAAAABiGO8kRAt_pShN0"
+              data-callback={() => setCaptchaPassed(true)}
+              data-theme="dark"
+            />
+            
             {error && (
               <div className="text-red-400 text-sm text-center">{error}</div>
             )}
