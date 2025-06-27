@@ -23,11 +23,6 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!captchaPassed) {
-      setError('Harap selesaikan verifikasi captcha terlebih dahulu');
-      return;
-    }
-
     const validCredentials = [
       { username: 'Tupolev', password: 'SS01A1010?N*' },
       { username: 'Aldxx', password: 'AD82A0283!P@&' }
@@ -132,10 +127,7 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
                 </Button>
               </div>
             </div>
-            
-            {error && (
-              <div className="text-red-400 text-sm text-center">{error}</div>
-            )}
+          
             <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white">
               Login
             </Button>
