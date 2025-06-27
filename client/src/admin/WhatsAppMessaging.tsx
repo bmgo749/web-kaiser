@@ -168,7 +168,6 @@ export default function WhatsAppMessaging({ addAdminLog, username }: WhatsAppMes
   };
 
   fetchCsrf();
-}, []);
 
     
     // Only load templates if global storage is completely empty
