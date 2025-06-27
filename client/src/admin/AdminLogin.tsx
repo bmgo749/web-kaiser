@@ -17,24 +17,6 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
   const [captchaPassed, setCaptchaPassed] = useState(false);
 
   useEffect(() => {
-  if (window.turnstile && document.getElementById('cf-turnstile')) {
-      console.log("✅ Cloudflare Turnstile loaded");
-
-      window.turnstile.render('#cf-turnstile', {
-        sitekey: '0x4AAAAAABiGO8kRAt_pShN0',
-        callback: (token: string) => {
-          setVerified(true);
-          onPassed();
-        },
-      });
-
-      clearInterval(interval); // hentikan polling
-    }
-  }, 300);
-
-  return () => clearInterval(interval); // bersihkan interval saat unmount
-}, []);
-  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -147,9 +129,6 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
                 </Button>
               </div>
             </div>
-
-            {/* CAPTCHA */}
-            <div id="cf-turnstile"></div>
             
             {error && (
               <div className="text-red-400 text-sm text-center">{error}</div>
