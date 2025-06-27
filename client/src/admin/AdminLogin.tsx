@@ -17,27 +17,6 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
   const [captchaPassed, setCaptchaPassed] = useState(false);
 
   useEffect(() => {
-
-    
-import React, { useEffect, useState } from 'react';
-import {
-  Button, Input, Label, Card, CardContent, CardDescription, CardHeader, CardTitle
-} from './ui-components';
-import { Eye, EyeOff } from 'lucide-react';
-import socket from '../socket';
-
-interface AdminLoginProps {
-  onLogin: (username: string, password: string) => void;
-}
-
-export default function AdminLogin({ onLogin }: AdminLoginProps) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
-  const [captchaPassed, setCaptchaPassed] = useState(false);
-
-  useEffect(() => {
     
   }, []);
   
