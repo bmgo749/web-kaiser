@@ -17,15 +17,6 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
   const [captchaPassed, setCaptchaPassed] = useState(false);
 
   useEffect(() => {
-  const checkReady = setInterval(() => {
-    const iframe = document.querySelector('iframe[src*="challenges.cloudflare.com"]');
-    if (iframe) {
-      console.log("✅ Turnstile rendered!");
-      clearInterval(checkReady);
-    }
-  }, 500);
-  return () => clearInterval(checkReady);
-}, []);
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
