@@ -141,12 +141,14 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
             </div>
 
             {/* CAPTCHA */}
-            <div
-              className="cf-turnstile flex justify-center pt-2"
-              data-sitekey="0x4AAAAAABiGO8kRAt_pShN0"
-              data-callback={() => setCaptchaPassed(true)}
-              data-theme="dark"
-            />
+            <div className="flex justify-center pt-2">
+              <div
+                className="cf-turnstile"
+                data-sitekey="0x4AAAAAABiGO8kRAt_pShN0"
+                data-callback={() => setCaptchaPassed(true)}
+                data-theme="dark"
+              ></div>
+            </div>
             
             {error && (
               <div className="text-red-400 text-sm text-center">{error}</div>
