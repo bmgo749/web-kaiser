@@ -17,14 +17,29 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
   const [captchaPassed, setCaptchaPassed] = useState(false);
 
   useEffect(() => {
-  const checkReady = setInterval(() => {
-    const iframe = document.querySelector('iframe[src*="challenges.cloudflare.com"]');
-    if (iframe) {
-      console.log("✅ Turnstile rendered!");
-      clearInterval(checkReady);
+  const renderCaptcha = () => {
+    const container = document.querySelector('.cf-turnstile');
+    if (window.turnstile && container) {
+      console.log("✅ Turnstile ready, rendering...");
+      window.turnstile.render(container, {
+        sitekey: '0x4AAAAAABiGO8kRAt_pShN0',
+        theme: 'dark',
+        callback: function () {
+          console.log("✅ CAPTCHA verified");
+          setCaptchaPassed(true);
+        }
+      });
     }
-  }, 500);
-  return () => clearInterval(checkReady);
+  };
+
+  const interval = setInterval(() => {
+    if (window.turnstile) {
+      renderCaptcha();
+      clearInterval(interval);
+    }
+  }, 300);
+
+  return () => clearInterval(interval);
 }, []);
   
   const handleSubmit = (e: React.FormEvent) => {
@@ -142,12 +157,7 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
 
             {/* CAPTCHA */}
             <div className="flex justify-center pt-2">
-              <div
-                className="cf-turnstile"
-                data-sitekey="0x4AAAAAABiGO8kRAt_pShN0"
-                data-callback={() => setCaptchaPassed(true)}
-                data-theme="dark"
-              ></div>
+              <div className="cf-turnstile"></div>
             </div>
             
             {error && (
